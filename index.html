@@ -2,545 +2,391 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LFSQ MD 실적 대시보드</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F7F6F3;--surface:#FFFFFF;--surface2:#F2F1ED;
-  --border:#E2E0DA;--border2:#CCCAC3;
-  --text:#1A1A18;--text2:#5F5E5A;--text3:#9B9993;
-  --blue:#185FA5;--blue-light:#E6F1FB;--blue-bd:#B5D4F4;--blue-dim:#B5D4F4;
-  --green:#0F6E56;--green-light:#E1F5EE;--green-bd:#9FE1CB;
-  --amber:#854F0B;--amber-light:#FAEEDA;--amber-bd:#FAC775;
-  --red:#A32D2D;--gap:12px;--radius:10px;--radius-sm:6px
+  --bg:#F7F6F3;--surface:#fff;--s2:#F2F1ED;--border:#E2E0DA;--b2:#CCCAC3;
+  --t1:#1A1A18;--t2:#5F5E5A;--t3:#9B9993;
+  --blue:#185FA5;--bl:#E6F1FB;--bbd:#B5D4F4;
+  --green:#0F6E56;--gl:#E1F5EE;--gbd:#9FE1CB;
+  --amber:#854F0B;--al:#FAEEDA;--abd:#FAC775;
+  --red:#A32D2D;--r:10px;--rs:6px;--gap:12px
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:var(--text);background:var(--bg);min-height:100vh}
-.wrap{max-width:1200px;margin:0 auto;padding:20px 16px 40px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:var(--t1);background:var(--bg);min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
 
-/* ── 헤더 ── */
+/* 업로드 오버레이 */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:999}
+.uc{background:#fff;border-radius:16px;padding:40px 48px;text-align:center;max-width:460px;width:90%}
+.uc-icon{font-size:48px;margin-bottom:16px}
+.uc h2{font-size:18px;font-weight:500;margin-bottom:8px}
+.uc p{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:24px}
+.dz{border:2px dashed var(--b2);border-radius:10px;padding:28px;cursor:pointer;transition:border-color .2s;margin-bottom:16px;background:var(--bg)}
+.dz:hover,.dz.drag{border-color:var(--blue);background:var(--bl)}
+.dz input{display:none}
+.dz-main{font-size:13px;color:var(--blue);font-weight:500;margin-bottom:4px}
+.dz-sub{font-size:11px;color:var(--t3)}
+.uc-note{font-size:11px;color:var(--t3);background:var(--bg);border-radius:6px;padding:8px 12px}
+.uc-note b{color:var(--t2)}
+#loadMsg{display:none;font-size:13px;color:var(--t2);margin-top:12px}
+#loadMsg.show{display:block}
+
+/* 헤더 */
 .header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:1.2rem;padding-bottom:.9rem;border-bottom:1.5px solid var(--border);flex-wrap:wrap}
-.header-left{display:flex;align-items:center;gap:10px}
-.header-emoji{font-size:26px;line-height:1}
-.header-left h1{font-size:17px;font-weight:500;letter-spacing:-.01em}
-.header-left .sub{font-size:11px;color:var(--text3);margin-top:2px}
-/* 업로드 영역 */
-.upload-zone{display:flex;align-items:center;gap:8px;padding:7px 14px;border:1.5px dashed var(--border2);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface);transition:border-color .2s}
-.upload-zone:hover{border-color:var(--blue)}
-.upload-zone input{display:none}
-.upload-zone .uz-icon{font-size:16px}
-.upload-zone .uz-text{font-size:11px;color:var(--text2)}
-.upload-zone .uz-text b{color:var(--blue)}
-.upload-zone.loaded{border-color:var(--green);border-style:solid}
-.upload-zone.loaded .uz-text b{color:var(--green)}
+.header-l{display:flex;align-items:center;gap:10px}
+.header-l h1{font-size:17px;font-weight:500;letter-spacing:-.01em}
+.header-l .sub{font-size:11px;color:var(--t3);margin-top:2px}
+.rbtn{display:flex;align-items:center;gap:6px;padding:6px 12px;border:0.5px solid var(--b2);border-radius:var(--rs);font-size:11px;color:var(--t2);cursor:pointer;background:var(--surface);transition:background .15s}
+.rbtn:hover{background:var(--s2)}
 
-/* ── KPI ── */
+/* KPI */
 .kpi-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin-bottom:1.2rem}
-.kpi{background:var(--surface2);border-radius:var(--radius-sm);padding:12px 14px}
-.kpi .k-icon{font-size:16px;margin-bottom:4px}
-.kpi .k-label{font-size:11px;color:var(--text2);margin-bottom:3px}
-.kpi .k-val{font-size:22px;font-weight:500}
-.kpi .k-sub{font-size:11px;color:var(--text3);margin-top:2px}
-.kpi .k-yoy{font-size:11px;font-weight:500;margin-top:4px;padding:2px 7px;border-radius:20px;display:inline-block}
-.ydn{background:#FCEBEB;color:var(--red)}.yup{background:var(--green-light);color:var(--green)}
-.kpi.kblue{background:var(--blue-light);border:1px solid var(--blue-bd)}
-.kpi.kblue .k-val{color:var(--blue)}.kpi.kblue .k-label,.kpi.kblue .k-icon,.kpi.kblue .k-sub{color:#378ADD}
-.kpi.kgreen{background:var(--green-light);border:1px solid var(--green-bd)}
-.kpi.kgreen .k-val{color:var(--green)}.kpi.kgreen .k-label,.kpi.kgreen .k-icon,.kpi.kgreen .k-sub{color:#1D9E75}
-.kpi.kamber{background:var(--amber-light);border:1px solid var(--amber-bd)}
-.kpi.kamber .k-val{color:var(--amber)}.kpi.kamber .k-label,.kpi.kamber .k-icon,.kpi.kamber .k-sub{color:#BA7517}
-.mv-line{display:flex;align-items:baseline;gap:5px;font-size:13px;font-weight:500;margin-top:3px;line-height:1.5}
-.mv-bullet{font-size:10px;color:var(--text3)}
-.split-bar{display:flex;height:7px;border-radius:3px;overflow:hidden;margin:5px 0 3px}
-.split-labels{display:flex;justify-content:space-between;font-size:10px}
+.kpi{background:var(--s2);border-radius:var(--rs);padding:12px 14px}
+.kpi .ki{font-size:16px;margin-bottom:4px}
+.kpi .kl{font-size:11px;color:var(--t2);margin-bottom:3px}
+.kpi .kv{font-size:22px;font-weight:500}
+.kpi .ks{font-size:11px;color:var(--t3);margin-top:2px}
+.kpi .ky{font-size:11px;font-weight:500;margin-top:4px;padding:2px 7px;border-radius:20px;display:inline-block}
+.ydn{background:#FCEBEB;color:var(--red)}.yup{background:var(--gl);color:var(--green)}
+.kb{background:var(--bl);border:1px solid var(--bbd)}.kb .kv{color:var(--blue)}.kb .kl,.kb .ki,.kb .ks{color:#378ADD}
+.kg{background:var(--gl);border:1px solid var(--gbd)}.kg .kv{color:var(--green)}.kg .kl,.kg .ki,.kg .ks{color:#1D9E75}
+.ka{background:var(--al);border:1px solid var(--abd)}.ka .kv{color:var(--amber)}.ka .kl,.ka .ki,.ka .ks{color:#BA7517}
+.mv{display:flex;align-items:baseline;gap:5px;font-size:13px;font-weight:500;margin-top:3px;line-height:1.5}
+.mvb{font-size:10px;color:var(--t3)}
+.sbar{display:flex;height:7px;border-radius:3px;overflow:hidden;margin:5px 0 3px}
+.slbl{display:flex;justify-content:space-between;font-size:10px}
 
-/* ── 카드 ── */
-.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px}
-.card-title{font-size:13px;font-weight:500;margin-bottom:11px;color:var(--text)}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap);margin-bottom:1.2rem}
+/* 카드 */
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:14px}
+.ct{font-size:13px;font-weight:500;margin-bottom:11px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap);margin-bottom:1.2rem}
 .mb{margin-bottom:1.2rem}
-.legend{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
-.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.leg{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2)}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0}
 
-/* ── 바차트 ── */
-.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:6px}
-.bar-label{font-size:11px;color:var(--text2);width:74px;text-align:right;flex-shrink:0}
-.bar-track{flex:1;height:15px;background:var(--surface2);border-radius:3px;overflow:hidden;position:relative}
-.bar-fill{height:100%;border-radius:3px}
-.bar-lic-ovl{position:absolute;top:0;left:0;height:100%;border-radius:3px;opacity:.9}
-.bar-val{font-size:10px;color:var(--text2);width:100px;text-align:right;flex-shrink:0;white-space:nowrap;line-height:1.35}
+/* 바차트 */
+.br{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.bl2{font-size:11px;color:var(--t2);width:74px;text-align:right;flex-shrink:0}
+.bt{flex:1;height:15px;background:var(--s2);border-radius:3px;overflow:hidden;position:relative}
+.bf{height:100%;border-radius:3px}
+.blo{position:absolute;top:0;left:0;height:100%;border-radius:3px;opacity:.9}
+.bv{font-size:10px;color:var(--t2);width:100px;text-align:right;flex-shrink:0;white-space:nowrap;line-height:1.35}
 
-/* ── 트리맵 ── */
+/* 트리맵 */
 #treemap{width:100%;height:260px;position:relative;border-radius:8px;overflow:hidden}
-.tm-cell{position:absolute;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 10px;cursor:default;transition:filter .15s}
-.tm-cell:hover{filter:brightness(1.1)}
-.tm-ip{font-size:9px;font-weight:500;color:rgba(255,255,255,.75);letter-spacing:.04em}
-.tm-val{font-size:12px;font-weight:500;color:#fff}
-.tm-pct{font-size:10px;color:rgba(255,255,255,.75);margin-top:1px}
-.tm-yoy{font-size:9px;margin-top:2px;padding:1px 5px;border-radius:8px;background:rgba(0,0,0,.22);color:#fff;display:inline-block}
+.tmc{position:absolute;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 10px;cursor:default;transition:filter .15s}
+.tmc:hover{filter:brightness(1.1)}
+.tmi{font-size:9px;font-weight:500;color:rgba(255,255,255,.75);letter-spacing:.04em}
+.tmv{font-size:12px;font-weight:500;color:#fff}
+.tmp{font-size:10px;color:rgba(255,255,255,.75);margin-top:1px}
+.tmy{font-size:9px;margin-top:2px;padding:1px 5px;border-radius:8px;background:rgba(0,0,0,.22);color:#fff;display:inline-block}
 
-/* ── 슬라이서 ── */
-.slicer-wrap{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;flex-wrap:wrap;gap:6px}
-.slicer{display:flex;border-radius:4px;overflow:hidden;border:0.5px solid var(--border2);width:fit-content}
-.sl-btn{padding:2px 8px;font-size:9px;cursor:pointer;border:none;border-right:0.5px solid var(--border2);color:#fff;font-weight:500;white-space:nowrap;opacity:.6;line-height:1.5}
-.sl-btn:last-child{border-right:none}
-.sl-btn.on{opacity:1}
-.sl-btn:hover:not(.on){opacity:.85}
-.sl-all{background:#888780}.sl-lfsq{background:#378ADD}.sl-orig{background:#1D9E75}
-.sl-artist{background:#EF9F27}.sl-partner{background:#D4537E}
-.sl-ch-all{background:#5F5E5A}.sl-ch-on{background:#185FA5}.sl-ch-off{background:#0F6E56}
+/* 슬라이서 */
+.sw{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;flex-wrap:wrap;gap:6px}
+.slic{display:flex;border-radius:4px;overflow:hidden;border:0.5px solid var(--b2);width:fit-content}
+.sb{padding:2px 8px;font-size:9px;cursor:pointer;border:none;border-right:0.5px solid var(--b2);color:#fff;font-weight:500;white-space:nowrap;opacity:.6;line-height:1.5}
+.sb:last-child{border-right:none}.sb.on{opacity:1}.sb:hover:not(.on){opacity:.85}
+.sa{background:#888780}.slfsq{background:#378ADD}.sorig{background:#1D9E75}
+.sart{background:#EF9F27}.spart{background:#D4537E}
+.scall{background:#5F5E5A}.scon{background:#185FA5}.scoff{background:#0F6E56}
 
-/* ── 테이블 ── */
-.md-table{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}
-.md-table th{padding:6px 9px;text-align:left;font-weight:500;color:var(--text2);border-bottom:0.5px solid var(--border);background:var(--surface2);white-space:nowrap}
-.md-table th.num{text-align:right}
-.md-table td{padding:5px 9px;border-bottom:0.5px solid var(--border);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.md-table td.num{text-align:right;font-variant-numeric:tabular-nums}
-.md-table tr:hover td{background:var(--surface2)}
-.md-table col.c-name{width:34%}.md-table col.c-data{width:22%}
-.sr-lfsq td{background:#EEF4FB!important;color:#185FA5;font-weight:500;border-top:1px solid #B5D4F4}
-.sr-orig td{background:#EDF6F2!important;color:#0F6E56;font-weight:500;border-top:1px solid #9FE1CB}
-.sr-artist td{background:#FEF6E6!important;color:#854F0B;font-weight:500;border-top:1px solid #FAC775}
-.sr-partner td{background:#FDF0F5!important;color:#993556;font-weight:500;border-top:1px solid #F4C0D1}
-.sr-online td{background:#EEF4FB!important;color:#185FA5;font-weight:500;border-top:1px solid #B5D4F4}
-.sr-offline td{background:#EDF6F2!important;color:#0F6E56;font-weight:500;border-top:1px solid #9FE1CB}
-.inline-bar{display:flex;align-items:center;gap:5px}
-.ib-track{flex:1;height:6px;background:var(--surface2);border-radius:2px;overflow:hidden}
-.ib-fill{height:100%;border-radius:2px}
-.ib-pct{font-size:10px;min-width:36px;text-align:right;white-space:nowrap}
+/* 테이블 */
+.tbl{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}
+.tbl th{padding:6px 9px;text-align:left;font-weight:500;color:var(--t2);border-bottom:0.5px solid var(--border);background:var(--s2);white-space:nowrap}
+.tbl th.n{text-align:right}
+.tbl td{padding:5px 9px;border-bottom:0.5px solid var(--border);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl td.n{text-align:right;font-variant-numeric:tabular-nums}
+.tbl tr:hover td{background:var(--s2)}
+.tbl col.cn{width:34%}.tbl col.cd{width:22%}
+.rl td{background:#EEF4FB!important;color:#185FA5;font-weight:500;border-top:1px solid #B5D4F4}
+.ro td{background:#EDF6F2!important;color:#0F6E56;font-weight:500;border-top:1px solid #9FE1CB}
+.ra td{background:#FEF6E6!important;color:#854F0B;font-weight:500;border-top:1px solid #FAC775}
+.rp td{background:#FDF0F5!important;color:#993556;font-weight:500;border-top:1px solid #F4C0D1}
+.ron td{background:#EEF4FB!important;color:#185FA5;font-weight:500;border-top:1px solid #B5D4F4}
+.rof td{background:#EDF6F2!important;color:#0F6E56;font-weight:500;border-top:1px solid #9FE1CB}
+.ibr{display:flex;align-items:center;gap:5px}
+.ibt{flex:1;height:6px;background:var(--s2);border-radius:2px;overflow:hidden}
+.ibf{height:100%;border-radius:2px}
+.ibp{font-size:10px;min-width:36px;text-align:right;white-space:nowrap}
 
-/* ── 브랜드 ── */
-.brand-section{margin-bottom:.9rem}
-.brand-hd{display:flex;align-items:center;gap:7px;margin-bottom:7px;padding-bottom:4px;border-bottom:0.5px solid var(--border)}
-.brand-hd .badge{font-size:11px;font-weight:500;padding:2px 7px;border-radius:20px}
-.brand-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
-.b-row{display:flex;align-items:center;gap:5px;margin-bottom:2px}
-.b-name{font-size:11px;color:var(--text2);width:90px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.b-track{flex:1;height:11px;background:var(--surface2);border-radius:2px;overflow:hidden}
-.b-fill{height:100%;border-radius:2px;opacity:.85}
-.b-info{font-size:10px;color:var(--text2);width:92px;text-align:right;flex-shrink:0;white-space:nowrap}
+/* 브랜드 */
+.brs{margin-bottom:.9rem}
+.brh{display:flex;align-items:center;gap:7px;margin-bottom:7px;padding-bottom:4px;border-bottom:0.5px solid var(--border)}
+.brh .bdg{font-size:11px;font-weight:500;padding:2px 7px;border-radius:20px}
+.brg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
+.brw{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.brn{font-size:11px;color:var(--t2);width:90px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brt{flex:1;height:11px;background:var(--s2);border-radius:2px;overflow:hidden}
+.brf{height:100%;border-radius:2px;opacity:.85}
+.bri{font-size:10px;color:var(--t2);width:92px;text-align:right;flex-shrink:0;white-space:nowrap}
 
-@media(max-width:700px){
-  .kpi-row{grid-template-columns:repeat(2,1fr)}
-  .grid2{grid-template-columns:1fr}
-}
+@media(max-width:680px){.kpi-row{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<!-- 헤더 -->
-<div class="header">
-  <div class="header-left">
-    <div class="header-emoji">📊</div>
-    <div>
-      <h1 id="hdr-title">LFSQ MD 실적 대시보드</h1>
-      <div class="sub" id="hdr-sub">회계연도 기준 · 전년 동월 대비 YOY 포함</div>
+<div id="overlay">
+  <div class="uc">
+    <div class="uc-icon">📊</div>
+    <h2>LFSQ MD 실적 대시보드</h2>
+    <p>매출 RAW 데이터 엑셀 파일을 업로드하면<br>대시보드가 자동으로 생성됩니다.</p>
+    <label class="dz" id="dropZone">
+      <input type="file" id="fileInput" accept=".xlsx,.xls">
+      <div class="dz-main">📂 엑셀 파일을 드래그하거나 클릭해서 선택</div>
+      <div class="dz-sub">26년 실적 RAW + 25년 실적 시트가 포함된 파일</div>
+    </label>
+    <div class="uc-note">필요한 시트: <b>26년 실적 RAW</b> · <b>25년 실적</b><br>필수 컬럼: IP_그룹, MD 구분_IP, 브랜드/업체명, 제작방식, channel_2, quantity, price</div>
+    <div id="loadMsg">⏳ 데이터 처리 중...</div>
+  </div>
+</div>
+
+<div class="wrap" id="dashboard" style="display:none">
+  <div class="header">
+    <div class="header-l">
+      <div style="font-size:26px;line-height:1">📊</div>
+      <div><h1 id="hTitle">LFSQ MD 실적 대시보드</h1><div class="sub">회계연도 기준 · 전년 동월 대비 YOY 포함</div></div>
+    </div>
+    <button class="rbtn" onclick="showOverlay()">📂 다른 파일 불러오기</button>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="ki">🏪</div><div class="kl">총 매출</div><div class="kv" id="k0">—</div><div class="ks" id="k0s">—</div><div class="ky" id="k0y"></div></div>
+    <div class="kpi kb"><div class="ki">🛒</div><div class="kl">사입(Buying) 매출</div><div class="kv" id="k1">—</div><div class="ks" id="k1s">—</div><div class="ky" id="k1y"></div></div>
+    <div class="kpi kg"><div class="ki">📊</div><div class="kl">총매출 대비 사입 비중</div><div class="kv" id="k2">—</div><div class="ks" id="k2s">—</div><div class="ky" id="k2y"></div></div>
+    <div class="kpi ka">
+      <div class="ki">🏷️</div><div class="kl">MULTI vs LC 사입 비중</div>
+      <div class="mv"><span class="mvb">·</span><span id="mv0" style="color:#185FA5;font-weight:500">—</span></div>
+      <div class="mv"><span class="mvb">·</span><span id="mv1" style="color:#BA7517;font-weight:500">—</span></div>
+      <div class="sbar" style="margin-top:6px"><div id="sb0" style="background:#378ADD;border-radius:3px 0 0 3px"></div><div id="sb1" style="background:#EF9F27;border-radius:0 3px 3px 0"></div></div>
+      <div class="slbl"><span id="sl0" style="color:#378ADD">—</span><span id="sl1" style="color:#EF9F27">—</span></div>
     </div>
   </div>
-  <label class="upload-zone" id="uploadZone">
-    <input type="file" id="fileInput" accept=".xlsx,.xls">
-    <span class="uz-icon">📂</span>
-    <span class="uz-text"><b>엑셀 파일 업로드</b><br>클릭하거나 파일을 드래그하세요</span>
-  </label>
-</div>
 
-<!-- KPI -->
-<div class="kpi-row">
-  <div class="kpi"><div class="k-icon">🏪</div><div class="k-label">총 매출</div><div class="k-val" id="k-total">—</div><div class="k-sub" id="k-total-sub">—</div><div class="k-yoy" id="k-total-yoy"></div></div>
-  <div class="kpi kblue"><div class="k-icon">🛒</div><div class="k-label">사입(Buying) 매출</div><div class="k-val" id="k-lic">—</div><div class="k-sub" id="k-lic-sub">—</div><div class="k-yoy" id="k-lic-yoy"></div></div>
-  <div class="kpi kgreen"><div class="k-icon">📊</div><div class="k-label">총매출 대비 사입 비중</div><div class="k-val" id="k-ratio">—</div><div class="k-sub" id="k-ratio-sub">—</div><div class="k-yoy" id="k-ratio-yoy"></div></div>
-  <div class="kpi kamber">
-    <div class="k-icon">🏷️</div>
-    <div class="k-label">MULTI vs LC 사입 비중</div>
-    <div class="mv-line"><span class="mv-bullet">·</span><span id="mv-multi" style="color:#185FA5;font-weight:500">—</span></div>
-    <div class="mv-line"><span class="mv-bullet">·</span><span id="mv-lc" style="color:#BA7517;font-weight:500">—</span></div>
-    <div class="split-bar" style="margin-top:6px"><div id="sb-multi" style="background:#378ADD;border-radius:3px 0 0 3px"></div><div id="sb-lc" style="background:#EF9F27;border-radius:0 3px 3px 0"></div></div>
-    <div class="split-labels"><span id="sl-multi" style="color:#378ADD">—</span><span id="sl-lc" style="color:#EF9F27">—</span></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">IP 그룹별 총매출 vs 사입(Buying) 매출</div>
+      <div class="leg"><div class="li"><div class="ld" style="background:#B5D4F4"></div>총매출</div><div class="li"><div class="ld" style="background:#185FA5"></div>사입(Buying)</div></div>
+      <div id="ipBars"></div>
+      <div style="margin-top:9px;padding-top:7px;border-top:0.5px solid var(--border)">
+        <div style="font-size:10px;color:var(--t3);margin-bottom:4px">YOY 사입 비교 (전년→당해, 단위: 백만원)</div>
+        <div id="yoyBars"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">사입(Buying) 매출 구성</div>
+      <div style="font-size:10px;color:var(--t3);margin-bottom:7px">면적 = 사입 비중 · 단위: 백만원</div>
+      <div id="treemap"></div>
+    </div>
   </div>
-</div>
 
-<!-- IP 바 + 트리맵 -->
-<div class="grid2">
+  <div class="card mb">
+    <div class="sw">
+      <div class="ct" style="margin-bottom:0">MD 구분 IP별 매출 상세</div>
+      <div class="slic">
+        <button class="sb sa on" onclick="slMd('all',this)">전체</button>
+        <button class="sb slfsq" onclick="slMd('LFSQ',this)">LFSQ</button>
+        <button class="sb sorig" onclick="slMd('ORIGINAL',this)">ORIGINAL</button>
+        <button class="sb sart" onclick="slMd('ARTIST',this)">ARTIST</button>
+        <button class="sb spart" onclick="slMd('Patnership',this)">Patnership</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto"><table class="tbl"><colgroup><col class="cn"><col class="cd"><col class="cd"><col class="cd"></colgroup>
+      <thead><tr><th>MD 구분 IP</th><th class="n">총매출 (백만)</th><th class="n">사입 매출 (백만)</th><th class="n">사입 비중</th></tr></thead>
+      <tbody id="mdBody"></tbody>
+    </table></div>
+  </div>
+
+  <div class="card mb">
+    <div class="ct">사입(Buying) 매출 — IP별 주요 브랜드</div>
+    <div id="brands"></div>
+  </div>
+
   <div class="card">
-    <div class="card-title">IP 그룹별 총매출 vs 사입(Buying) 매출</div>
-    <div class="legend">
-      <div class="leg-item"><div class="leg-dot" style="background:#B5D4F4"></div>총매출</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#185FA5"></div>사입(Buying)</div>
+    <div class="sw">
+      <div class="ct" style="margin-bottom:0">채널별 매출 현황</div>
+      <div class="slic">
+        <button class="sb scall on" onclick="slCh('all',this)">전체</button>
+        <button class="sb scon" onclick="slCh('온라인',this)">온라인</button>
+        <button class="sb scoff" onclick="slCh('오프라인',this)">오프라인</button>
+      </div>
     </div>
-    <div id="ipBars"></div>
-    <div style="margin-top:9px;padding-top:7px;border-top:0.5px solid var(--border)">
-      <div style="font-size:10px;color:var(--text3);margin-bottom:4px">YOY 사입 비교 (전년→당해 4월, 단위: 백만원)</div>
-      <div id="yoyBars"></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">사입(Buying) 매출 구성</div>
-    <div style="font-size:10px;color:var(--text3);margin-bottom:7px">면적 = 사입 비중 · 단위: 백만원</div>
-    <div id="treemap"></div>
+    <div style="overflow-x:auto"><table class="tbl"><colgroup><col class="cn"><col class="cd"><col class="cd"><col class="cd"></colgroup>
+      <thead><tr><th>채널명</th><th class="n">총매출 (백만)</th><th class="n">사입 매출 (백만)</th><th class="n">사입 비중</th></tr></thead>
+      <tbody id="chBody"></tbody>
+    </table></div>
   </div>
 </div>
-
-<!-- MD 상세 -->
-<div class="card mb">
-  <div class="slicer-wrap">
-    <div class="card-title" style="margin-bottom:0">MD 구분 IP별 매출 상세</div>
-    <div class="slicer">
-      <button class="sl-btn sl-all on" onclick="sliceMd('all',this)">전체</button>
-      <button class="sl-btn sl-lfsq" onclick="sliceMd('LFSQ',this)">LFSQ</button>
-      <button class="sl-btn sl-orig" onclick="sliceMd('ORIGINAL',this)">ORIGINAL</button>
-      <button class="sl-btn sl-artist" onclick="sliceMd('ARTIST',this)">ARTIST</button>
-      <button class="sl-btn sl-partner" onclick="sliceMd('Patnership',this)">Patnership</button>
-    </div>
-  </div>
-  <div style="overflow-x:auto">
-    <table class="md-table"><colgroup><col class="c-name"><col class="c-data"><col class="c-data"><col class="c-data"></colgroup>
-      <thead><tr><th>MD 구분 IP</th><th class="num">총매출 (백만)</th><th class="num">사입 매출 (백만)</th><th class="num">사입 비중</th></tr></thead>
-      <tbody id="mdTbody"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- 브랜드 -->
-<div class="card mb">
-  <div class="card-title">사입(Buying) 매출 — IP별 주요 브랜드</div>
-  <div id="allBrands"></div>
-</div>
-
-<!-- 채널 -->
-<div class="card">
-  <div class="slicer-wrap">
-    <div class="card-title" style="margin-bottom:0">채널별 매출 현황</div>
-    <div class="slicer">
-      <button class="sl-btn sl-ch-all on" onclick="sliceCh('all',this)">전체</button>
-      <button class="sl-btn sl-ch-on" onclick="sliceCh('온라인',this)">온라인</button>
-      <button class="sl-btn sl-ch-off" onclick="sliceCh('오프라인',this)">오프라인</button>
-    </div>
-  </div>
-  <div style="overflow-x:auto">
-    <table class="md-table"><colgroup><col class="c-name"><col class="c-data"><col class="c-data"><col class="c-data"></colgroup>
-      <thead><tr><th>채널명</th><th class="num">총매출 (백만)</th><th class="num">사입 매출 (백만)</th><th class="num">사입 비중</th></tr></thead>
-      <tbody id="chTbody"></tbody>
-    </table>
-  </div>
-</div>
-
-</div><!-- /wrap -->
 
 <script>
-/* ── 색상 팔레트 ── */
 const IPC={LFSQ:'#378ADD',ORIGINAL:'#1D9E75',ARTIST:'#EF9F27',Patnership:'#D4537E'};
 const IPL={LFSQ:'#B5D4F4',ORIGINAL:'#9FE1CB',ARTIST:'#FAC775',Patnership:'#F4C0D1'};
 const GRP=['LFSQ','ORIGINAL','ARTIST','Patnership'];
-const SR={LFSQ:'sr-lfsq',ORIGINAL:'sr-orig',ARTIST:'sr-artist',Patnership:'sr-partner'};
-const BADGE_STYLE={
-  LFSQ:'background:#E6F1FB;color:#185FA5',ORIGINAL:'background:#E1F5EE;color:#0F6E56',
-  ARTIST:'background:#FAEEDA;color:#854F0B',Patnership:'background:#FBEAF0;color:#993556'
-};
+const SR={LFSQ:'rl',ORIGINAL:'ro',ARTIST:'ra',Patnership:'rp'};
+const BD={LFSQ:'background:#E6F1FB;color:#185FA5',ORIGINAL:'background:#E1F5EE;color:#0F6E56',ARTIST:'background:#FAEEDA;color:#854F0B',Patnership:'background:#FBEAF0;color:#993556'};
+const ON_CH=['통합몰','스마트스토어','카카오커머스','29CM'];
+const OFF_CH=['라인프렌즈 스퀘어 명동점','홍대점','라인프렌즈 스퀘어 성수점','인사동점','분당스퀘어'];
 
-let D=null; // 현재 데이터
-let mdFilter='all', chFilter='all';
-
-/* ── 포맷 ── */
+let D=null,mdf='all',chf='all';
 const M=n=>Math.round(n/1e6).toLocaleString();
+const auk=n=>n>=1e8?(n/1e8).toFixed(1)+'억':(n/1e4).toFixed(0)+'만';
 const pct=(a,b)=>b?((a/b)*100).toFixed(1):'0.0';
-const fmtAuk=n=>n>=1e8?(n/1e8).toFixed(1)+'억':(n/1e4).toFixed(0)+'만';
-
-function inlineBar(lic,total,col){
-  if(!lic||!total) return '<span style="color:var(--text3)">—</span>';
-  const bw=Math.min(100,lic/total*100).toFixed(0), p=(lic/total*100).toFixed(1);
-  return `<div class="inline-bar"><div class="ib-track"><div class="ib-fill" style="width:${bw}%;background:${col}"></div></div><span class="ib-pct" style="color:${col}">${p}%</span></div>`;
+function ibar(l,t,c){
+  if(!l||!t)return'<span style="color:var(--t3)">—</span>';
+  const bw=Math.min(100,l/t*100).toFixed(0),p=(l/t*100).toFixed(1);
+  return `<div class="ibr"><div class="ibt"><div class="ibf" style="width:${bw}%;background:${c}"></div></div><span class="ibp" style="color:${c}">${p}%</span></div>`;
 }
+function sy(id,v){const e=document.getElementById(id),n=parseFloat(v);e.className='ky '+(n>=0?'yup':'ydn');e.textContent=(n>=0?'▲':'▼')+Math.abs(v)+'% YOY';}
 
-/* ── KPI 렌더 ── */
-function renderKPI(){
-  const {total26,lic26,total25,lic25,multi_lic,lc_lic,multi_pct,lc_pct}=D.kpi;
-  const yoyTotal=((total26/total25-1)*100).toFixed(1);
-  const yoyLic=((lic26/lic25-1)*100).toFixed(1);
-  const ratio26=(lic26/total26*100).toFixed(1);
-  const ratio25=(lic25/total25*100).toFixed(1);
-  const ratioYoy=(ratio26-ratio25).toFixed(1);
-
-  const setYoy=(id,val)=>{
-    const el=document.getElementById(id); const n=parseFloat(val);
-    el.className='k-yoy '+(n>=0?'yup':'ydn');
-    el.textContent=(n>=0?'▲':'▼')+Math.abs(val)+'% YOY';
+function parseExcel(wb){
+  const wR=wb.Sheets['26년 실적 RAW'],w25=wb.Sheets['25년 실적'];
+  if(!wR||!w25){alert('시트를 찾을 수 없습니다.\n필요: "26년 실적 RAW", "25년 실적"');return null;}
+  const raw=XLSX.utils.sheet_to_json(wR,{header:1,defval:''});
+  const hdrs=raw[1].map(h=>String(h).trim());
+  const rows=raw.slice(2).map(r=>{const o={};hdrs.forEach((h,i)=>o[h]=r[i]??'');return o;}).filter(r=>r['IP_그룹']&&String(r['IP_그룹']).trim());
+  const d25=XLSX.utils.sheet_to_json(w25,{header:1,defval:''});
+  const n25=(r,c)=>{const v=d25[r]&&d25[r][c];return typeof v==='number'?v:parseFloat(v)||0;};
+  const t25=n25(4,1),l25=n25(32,1);
+  const i25={LFSQ:n25(15,1),ORIGINAL:n25(10,1),ARTIST:n25(17,1),Patnership:n25(27,1)};
+  const nv=v=>{const n=parseFloat(v);return isNaN(n)?0:n;};
+  let t26=0,l26=0;
+  const it={LFSQ:0,ORIGINAL:0,ARTIST:0,Patnership:0},il={LFSQ:0,ORIGINAL:0,ARTIST:0,Patnership:0};
+  const mm={},ct={},cl={},br={LFSQ:{},ORIGINAL:{},ARTIST:{},Patnership:{}};
+  let months=new Set();
+  rows.forEach(r=>{
+    const rv=nv(r.quantity)*nv(r.price),ip=r['IP_그룹']?.trim(),md=r['MD 구분_IP']?.trim(),ch=r['channel_2']?.trim(),bn=r['브랜드/업체명']?.trim(),isL=r['제작방식']==='LICENSE';
+    if(r['판매월'])months.add(r['판매월']);
+    t26+=rv;if(isL)l26+=rv;
+    if(it[ip]!==undefined){it[ip]+=rv;if(isL)il[ip]+=rv;}
+    if(md){if(!mm[ip])mm[ip]={};if(!mm[ip][md])mm[ip][md]={total:0,lic:0,qty:0};mm[ip][md].total+=rv;mm[ip][md].qty+=nv(r.quantity);if(isL)mm[ip][md].lic+=rv;}
+    if(ch){ct[ch]=(ct[ch]||0)+rv;if(isL)cl[ch]=(cl[ch]||0)+rv;}
+    if(isL&&bn&&br[ip]){br[ip][bn]=(br[ip][bn]||0)+rv;}
+  });
+  const mo=[...months].sort(),ml=mo.length?`${mo[0]}월`:'4월';
+  const mi=il['LFSQ']||0,lc=l26-mi;
+  return{
+    meta:{month:`26년 ${ml}`,prev_month:`25년 ${ml}`},
+    kpi:{total26:t26,lic26:l26,total25:t25,lic25:l25,multi_lic:mi,lc_lic:lc,multi_pct:+((mi/l26)*100).toFixed(1)||0,lc_pct:+((lc/l26)*100).toFixed(1)||0},
+    ip:GRP.map(g=>({ip:g,total:it[g]||0,lic:il[g]||0,lic25:i25[g]||0})),
+    md:GRP.flatMap(ip=>Object.entries(mm[ip]||{}).map(([md,v])=>({ip,md,total:v.total,qty:v.qty,lic:v.lic}))),
+    channels:[...ON_CH.map(ch=>({type:'온라인',ch,total:ct[ch]||0,lic:cl[ch]||0})),...OFF_CH.map(ch=>({type:'오프라인',ch,total:ct[ch]||0,lic:cl[ch]||0}))],
+    brands:Object.fromEntries(GRP.map(ip=>[ip,Object.entries(br[ip]||{}).sort((a,b)=>b[1]-a[1]).map(([n,v])=>({n,v}))]))
   };
-
-  document.getElementById('k-total').textContent=fmtAuk(total26);
-  document.getElementById('k-total-sub').textContent=`25년 동월 ${fmtAuk(total25)}`;
-  setYoy('k-total-yoy',yoyTotal);
-
-  document.getElementById('k-lic').textContent=fmtAuk(lic26);
-  document.getElementById('k-lic-sub').textContent=`25년 동월 ${fmtAuk(lic25)}`;
-  setYoy('k-lic-yoy',yoyLic);
-
-  document.getElementById('k-ratio').textContent=ratio26+'%';
-  document.getElementById('k-ratio-sub').textContent=`25년 동월 ${ratio25}%`;
-  const ratioEl=document.getElementById('k-ratio-yoy');
-  ratioEl.className='k-yoy '+(parseFloat(ratioYoy)>=0?'yup':'ydn');
-  ratioEl.textContent=(parseFloat(ratioYoy)>=0?'▲':'▼')+Math.abs(ratioYoy)+'%p YOY';
-
-  document.getElementById('mv-multi').textContent=`MULTI ${multi_pct}%`;
-  document.getElementById('mv-lc').textContent=`LC ${lc_pct}%`;
-  document.getElementById('sb-multi').style.flex=multi_pct;
-  document.getElementById('sb-lc').style.flex=lc_pct;
-  document.getElementById('sl-multi').textContent=`MULTI ${M(multi_lic)}백만`;
-  document.getElementById('sl-lc').textContent=`LC ${M(lc_lic)}백만`;
 }
 
-/* ── IP 바 ── */
-function renderIPBars(){
+function rKPI(){
+  const k=D.kpi;
+  const yT=((k.total26/k.total25-1)*100).toFixed(1),yL=((k.lic26/k.lic25-1)*100).toFixed(1);
+  const r26=(k.lic26/k.total26*100).toFixed(1),r25=(k.lic25/k.total25*100).toFixed(1),ry=(r26-r25).toFixed(1);
+  document.getElementById('k0').textContent=auk(k.total26);document.getElementById('k0s').textContent=`25년 동월 ${auk(k.total25)}`;sy('k0y',yT);
+  document.getElementById('k1').textContent=auk(k.lic26);document.getElementById('k1s').textContent=`25년 동월 ${auk(k.lic25)}`;sy('k1y',yL);
+  document.getElementById('k2').textContent=r26+'%';document.getElementById('k2s').textContent=`25년 동월 ${r25}%`;
+  const re=document.getElementById('k2y');re.className='ky '+(parseFloat(ry)>=0?'yup':'ydn');re.textContent=(parseFloat(ry)>=0?'▲':'▼')+Math.abs(ry)+'%p YOY';
+  document.getElementById('mv0').textContent=`MULTI ${k.multi_pct}%`;document.getElementById('mv1').textContent=`LC ${k.lc_pct}%`;
+  document.getElementById('sb0').style.flex=k.multi_pct;document.getElementById('sb1').style.flex=k.lc_pct;
+  document.getElementById('sl0').textContent=`MULTI ${M(k.multi_lic)}백만`;document.getElementById('sl1').textContent=`LC ${M(k.lc_lic)}백만`;
+}
+
+function rIP(){
   const mx=Math.max(...D.ip.map(d=>d.total));
   document.getElementById('ipBars').innerHTML=D.ip.map(d=>{
     const tw=(d.total/mx*100).toFixed(1),lw=(d.lic/mx*100).toFixed(1),r=pct(d.lic,d.total);
-    return `<div class="bar-row">
-      <div class="bar-label">${d.ip}</div>
-      <div class="bar-track">
-        <div class="bar-fill" style="width:${tw}%;background:${IPL[d.ip]}"></div>
-        <div class="bar-lic-ovl" style="width:${lw}%;background:${IPC[d.ip]}"></div>
-      </div>
-      <div class="bar-val">총 ${M(d.total)}백만<br><span style="color:${IPC[d.ip]}">사입 ${M(d.lic)}백만 (${r}%)</span></div>
-    </div>`;
+    return `<div class="br"><div class="bl2">${d.ip}</div><div class="bt"><div class="bf" style="width:${tw}%;background:${IPL[d.ip]}"></div><div class="blo" style="width:${lw}%;background:${IPC[d.ip]}"></div></div><div class="bv">총 ${M(d.total)}백만<br><span style="color:${IPC[d.ip]}">사입 ${M(d.lic)}백만 (${r}%)</span></div></div>`;
   }).join('');
 }
 
-/* ── YOY 바 (하락=파랑, 상승=빨강) ── */
-function renderYOYBars(){
+function rYOY(){
   const mx=Math.max(...D.ip.map(d=>Math.max(d.lic,d.lic25)));
   document.getElementById('yoyBars').innerHTML=D.ip.map(d=>{
-    const yoy=((d.lic/d.lic25-1)*100).toFixed(1),isUp=d.lic>=d.lic25;
-    const yoyCol=isUp?'#A32D2D':'#185FA5';
+    const yoy=((d.lic/d.lic25-1)*100).toFixed(1),up=d.lic>=d.lic25,col=up?'#A32D2D':'#185FA5';
     const w25=(d.lic25/mx*100).toFixed(1),w26=(d.lic/mx*100).toFixed(1);
-    return `<div class="bar-row" style="margin-bottom:4px">
-      <div class="bar-label" style="font-size:10px">${d.ip}</div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:3px;margin-bottom:2px">
-          <div style="width:${w25}%;height:4px;background:#D3D1C7;border-radius:2px;min-width:2px"></div>
-          <span style="font-size:9px;color:var(--text3)">${M(d.lic25)}백만</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:3px">
-          <div style="width:${w26}%;height:4px;background:${IPC[d.ip]};border-radius:2px;min-width:2px"></div>
-          <span style="font-size:9px;color:${IPC[d.ip]}">${M(d.lic)}백만</span>
-        </div>
-      </div>
-      <div style="font-size:10px;font-weight:500;color:${yoyCol};width:52px;text-align:right">${isUp?'▲':'▼'}${Math.abs(yoy)}%</div>
-    </div>`;
+    return `<div class="br" style="margin-bottom:4px"><div class="bl2" style="font-size:10px">${d.ip}</div><div style="flex:1"><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px"><div style="width:${w25}%;height:4px;background:#D3D1C7;border-radius:2px;min-width:2px"></div><span style="font-size:9px;color:var(--t3)">${M(d.lic25)}백만</span></div><div style="display:flex;align-items:center;gap:3px"><div style="width:${w26}%;height:4px;background:${IPC[d.ip]};border-radius:2px;min-width:2px"></div><span style="font-size:9px;color:${IPC[d.ip]}">${M(d.lic)}백만</span></div></div><div style="font-size:10px;font-weight:500;color:${col};width:52px;text-align:right">${up?'▲':'▼'}${Math.abs(yoy)}%</div></div>`;
   }).join('');
 }
 
-/* ── 트리맵 ── */
-function renderTreemap(){
+function rTree(){
   const el=document.getElementById('treemap');
-  const W=el.offsetWidth||400,H=260;
+  const W=el.offsetWidth||460,H=260,GAP=3;
   el.style.height=H+'px';
-  const totalLic=D.ip.reduce((s,d)=>s+d.lic,0);
+  const tL=D.ip.reduce((s,d)=>s+d.lic,0);
   const sorted=[...D.ip].sort((a,b)=>b.lic-a.lic);
-  const GAP=3;
-  const left=sorted.slice(0,2),right=sorted.slice(2);
-  const lT=left.reduce((s,d)=>s+d.lic,0),rT=right.reduce((s,d)=>s+d.lic,0);
-  const lW=Math.round(W*lT/totalLic);
-  const cells=[];
-  let cy=0;
-  left.forEach(d=>{const h=Math.round(H*d.lic/lT);cells.push({...d,x:0,y:cy,w:lW,h});cy+=h;});
-  cy=0;
-  right.forEach(d=>{const h=Math.round(H*d.lic/rT);cells.push({...d,x:lW,y:cy,w:W-lW,h});cy+=h;});
-  el.innerHTML=cells.map(c=>{
-    const yoy=((c.lic/c.lic25-1)*100).toFixed(1),isUp=c.lic>=c.lic25;
-    const p=(c.lic/totalLic*100).toFixed(1);
-    return `<div class="tm-cell" style="left:${c.x+GAP}px;top:${c.y+GAP}px;width:${c.w-GAP*2}px;height:${c.h-GAP*2}px;background:${IPC[c.ip]}">
-      <div class="tm-ip">${c.ip}</div>
-      <div class="tm-val">${M(c.lic)}백만</div>
-      <div class="tm-pct">${p}%</div>
-      <div class="tm-yoy">${isUp?'▲':'▼'}${Math.abs(yoy)}%</div>
-    </div>`;
+  const l=sorted.slice(0,2),ri=sorted.slice(2),lT=l.reduce((s,d)=>s+d.lic,0),rT=ri.reduce((s,d)=>s+d.lic,0);
+  const lW=Math.round(W*lT/tL);
+  const cs=[];let cy=0;
+  l.forEach(d=>{const h=Math.round(H*d.lic/lT);cs.push({...d,x:0,y:cy,w:lW,h});cy+=h;});
+  cy=0;ri.forEach(d=>{const h=Math.round(H*d.lic/rT);cs.push({...d,x:lW,y:cy,w:W-lW,h});cy+=h;});
+  el.innerHTML=cs.map(c=>{
+    const yoy=((c.lic/c.lic25-1)*100).toFixed(1),up=c.lic>=c.lic25,p=(c.lic/tL*100).toFixed(1);
+    return `<div class="tmc" style="left:${c.x+GAP}px;top:${c.y+GAP}px;width:${c.w-GAP*2}px;height:${c.h-GAP*2}px;background:${IPC[c.ip]}"><div class="tmi">${c.ip}</div><div class="tmv">${M(c.lic)}백만</div><div class="tmp">${p}%</div><div class="tmy">${up?'▲':'▼'}${Math.abs(yoy)}%</div></div>`;
   }).join('');
 }
 
-/* ── MD 테이블 ── */
-function sliceMd(g,btn){
-  mdFilter=g;
-  btn.parentElement.querySelectorAll('.sl-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  renderMdTable();
-}
-function renderMdTable(){
-  const groups=mdFilter==='all'?GRP:[mdFilter];
-  let html='';
-  groups.forEach(g=>{
-    const rows=D.md.filter(d=>d.ip===g);
-    if(!rows.length) return;
-    const st=rows.reduce((s,r)=>s+r.total,0);
-    const sl=rows.reduce((s,r)=>s+r.lic,0);
-    const col=IPC[g];
-    html+=`<tr class="${SR[g]}"><td>📌 ${g} 합산</td><td class="num">${M(st)}</td><td class="num">${M(sl)}</td><td class="num">${inlineBar(sl,st,col)}</td></tr>`;
-    rows.forEach(d=>{
-      html+=`<tr><td style="padding-left:16px;font-weight:500">${d.md}</td>
-        <td class="num">${M(d.total)}</td>
-        <td class="num" style="color:${d.lic>0?col:'var(--text3)'}">${d.lic>0?M(d.lic):'—'}</td>
-        <td class="num">${d.lic>0?inlineBar(d.lic,d.total,col):'—'}</td></tr>`;
-    });
+function slMd(g,btn){mdf=g;btn.parentElement.querySelectorAll('.sb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');rMd();}
+function rMd(){
+  const gs=mdf==='all'?GRP:[mdf];let h='';
+  gs.forEach(g=>{
+    const rows=D.md.filter(d=>d.ip===g);if(!rows.length)return;
+    const st=rows.reduce((s,r)=>s+r.total,0),sl=rows.reduce((s,r)=>s+r.lic,0),c=IPC[g];
+    h+=`<tr class="${SR[g]}"><td>📌 ${g} 합산</td><td class="n">${M(st)}</td><td class="n">${M(sl)}</td><td class="n">${ibar(sl,st,c)}</td></tr>`;
+    rows.forEach(d=>{h+=`<tr><td style="padding-left:16px;font-weight:500">${d.md}</td><td class="n">${M(d.total)}</td><td class="n" style="color:${d.lic>0?c:'var(--t3)'}">${d.lic>0?M(d.lic):'—'}</td><td class="n">${d.lic>0?ibar(d.lic,d.total,c):'—'}</td></tr>`;});
   });
-  document.getElementById('mdTbody').innerHTML=html;
+  document.getElementById('mdBody').innerHTML=h;
 }
 
-/* ── 브랜드 ── */
-function renderBrands(){
-  document.getElementById('allBrands').innerHTML=GRP.map(ip=>{
-    const list=D.brands[ip]||[];
-    if(!list.length) return '';
-    const tot=list.reduce((s,b)=>s+b.v,0),mx=list[0].v,col=IPC[ip];
-    return `<div class="brand-section">
-      <div class="brand-hd"><span class="badge" style="${BADGE_STYLE[ip]}">${ip}</span>
-        <span style="font-size:11px;color:var(--text2)">사입 합계: ${M(tot)}백만</span></div>
-      <div class="brand-grid">${list.map(b=>{
-        const w=(b.v/mx*100).toFixed(1),p=(b.v/tot*100).toFixed(1);
-        return `<div class="b-row"><div class="b-name">${b.n}</div>
-          <div class="b-track"><div class="b-fill" style="width:${w}%;background:${col}"></div></div>
-          <div class="b-info">${M(b.v)}백만 <span style="color:${col};font-weight:500">${p}%</span></div></div>`;
-      }).join('')}</div></div>`;
+function rBrands(){
+  document.getElementById('brands').innerHTML=GRP.map(ip=>{
+    const list=D.brands[ip]||[];if(!list.length)return'';
+    const tot=list.reduce((s,b)=>s+b.v,0),mx=list[0].v,c=IPC[ip];
+    return `<div class="brs"><div class="brh"><span class="bdg" style="${BD[ip]}">${ip}</span><span style="font-size:11px;color:var(--t2)">사입 합계: ${M(tot)}백만</span></div><div class="brg">${list.map(b=>{const w=(b.v/mx*100).toFixed(1),p=(b.v/tot*100).toFixed(1);return `<div class="brw"><div class="brn">${b.n}</div><div class="brt"><div class="brf" style="width:${w}%;background:${c}"></div></div><div class="bri">${M(b.v)}백만 <span style="color:${c};font-weight:500">${p}%</span></div></div>`;}).join('')}</div></div>`;
   }).join('');
 }
 
-/* ── 채널 테이블 ── */
-function sliceCh(g,btn){
-  chFilter=g;
-  btn.parentElement.querySelectorAll('.sl-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  renderChTable();
-}
-function renderChTable(){
-  const types=chFilter==='all'?['온라인','오프라인']:[chFilter];
-  let html='';
-  types.forEach(t=>{
-    const rows=D.channels.filter(r=>r.type===t);
-    const st=rows.reduce((s,r)=>s+r.total,0),sl=rows.reduce((s,r)=>s+r.lic,0);
-    const col=t==='온라인'?'#185FA5':'#0F6E56';
-    const cls=t==='온라인'?'sr-online':'sr-offline';
-    html+=`<tr class="${cls}"><td>📌 ${t} 합산</td><td class="num">${M(st)}</td><td class="num">${M(sl)}</td><td class="num">${inlineBar(sl,st,col)}</td></tr>`;
-    rows.forEach(r=>{
-      html+=`<tr><td style="padding-left:16px;font-weight:500">${r.ch}</td>
-        <td class="num">${M(r.total)}</td>
-        <td class="num" style="color:${r.lic>0?col:'var(--text3)'}">${r.lic>0?M(r.lic):'—'}</td>
-        <td class="num">${r.lic>0?inlineBar(r.lic,r.total,col):'—'}</td></tr>`;
-    });
+function slCh(g,btn){chf=g;btn.parentElement.querySelectorAll('.sb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');rCh();}
+function rCh(){
+  const ts=chf==='all'?['온라인','오프라인']:[chf];let h='';
+  ts.forEach(t=>{
+    const rows=D.channels.filter(r=>r.type===t),st=rows.reduce((s,r)=>s+r.total,0),sl=rows.reduce((s,r)=>s+r.lic,0);
+    const c=t==='온라인'?'#185FA5':'#0F6E56',cls=t==='온라인'?'ron':'rof';
+    h+=`<tr class="${cls}"><td>📌 ${t} 합산</td><td class="n">${M(st)}</td><td class="n">${M(sl)}</td><td class="n">${ibar(sl,st,c)}</td></tr>`;
+    rows.forEach(r=>{h+=`<tr><td style="padding-left:16px;font-weight:500">${r.ch}</td><td class="n">${M(r.total)}</td><td class="n" style="color:${r.lic>0?c:'var(--t3)'}">${r.lic>0?M(r.lic):'—'}</td><td class="n">${r.lic>0?ibar(r.lic,r.total,c):'—'}</td></tr>`;});
   });
-  document.getElementById('chTbody').innerHTML=html;
+  document.getElementById('chBody').innerHTML=h;
 }
 
-/* ── 전체 렌더 ── */
-function renderAll(){
-  if(!D) return;
-  renderKPI(); renderIPBars(); renderYOYBars();
-  renderMdTable(); renderBrands(); renderChTable();
-  setTimeout(renderTreemap,60);
-}
+function renderAll(){if(!D)return;rKPI();rIP();rYOY();rMd();rBrands();rCh();setTimeout(rTree,80);}
 
-/* ── 엑셀 파싱 (26년 실적 시트 기준) ── */
-function parseExcel(wb){
-  const ws=wb.Sheets['26년 실적'];
-  const ws25=wb.Sheets['25년 실적'];
-  if(!ws||!ws25){alert('26년 실적 / 25년 실적 시트를 찾을 수 없습니다.');return;}
-  const d26=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-  const d25=XLSX.utils.sheet_to_json(ws25,{header:1,defval:''});
-
-  const num=(arr,r,c)=>{const v=arr[r]&&arr[r][c];return typeof v==='number'?v:parseFloat(v)||0;};
-
-  // 25년
-  const total25=num(d25,4,1),lic25=num(d25,32,1);
-  const ip25={LFSQ:num(d25,15,1),ORIGINAL:num(d25,10,1),ARTIST:num(d25,17,1),Patnership:num(d25,27,1)};
-
-  // 26년 총매출/IP/사입
-  const total26=num(d26,40,2);
-  const ip_t={LFSQ:num(d26,13,2),ORIGINAL:num(d26,15,2),ARTIST:num(d26,23,2),Patnership:num(d26,34,2)};
-  const ip_l={LFSQ:num(d26,48,2),ORIGINAL:num(d26,50,2),ARTIST:num(d26,55,2),Patnership:num(d26,58,2)};
-  const total_lic26=num(d26,63,2);
-
-  // MD 총매출
-  const md_t={
-    LFSQ:{MULTI:num(d26,14,2)},
-    ORIGINAL:{'B&F':num(d26,16,2),COLLER:num(d26,17,2),DHB:num(d26,18,2),LTC:num(d26,19,2),MININI:num(d26,20,2),SSEB:num(d26,21,2),ZNF:num(d26,22,2)},
-    ARTIST:{ATZ:num(d26,24,2),BT21:num(d26,25,2),IDLE:num(d26,26,2),NCTD:num(d26,27,2),NJ:num(d26,28,2),PLAVE:num(d26,29,2),TRZ:num(d26,30,2),ZB1:num(d26,31,2)},
-    Patnership:{JUG:num(d26,35,2),DT:num(d26,36,2),MONA:num(d26,37,2),PIC:num(d26,38,2)}
-  };
-  const md_l={
-    LFSQ:{MULTI:num(d26,49,2)},
-    ORIGINAL:{'B&F':num(d26,51,2),COLLER:num(d26,52,2),MININI:num(d26,53,2),ZNF:num(d26,54,2)},
-    ARTIST:{BT21:num(d26,56,2),ZB1:num(d26,57,2)},
-    Patnership:{JUG:num(d26,59,2),DT:num(d26,60,2),MONA:num(d26,61,2),PIC:num(d26,62,2)}
-  };
-
-  // 채널
-  const ch_t={'통합몰':num(d26,202,2),'스마트스토어':num(d26,203,2),'카카오커머스':num(d26,204,2),'29CM':num(d26,205,2),'라인프렌즈 스퀘어 명동점':num(d26,207,2),'라인프렌즈 스퀘어 성수점':num(d26,208,2),'분당스퀘어':num(d26,209,2),'인사동점':num(d26,210,2),'홍대점':num(d26,211,2)};
-  const ch_l={'통합몰':num(d26,224,2),'스마트스토어':num(d26,225,2),'카카오커머스':num(d26,226,2),'29CM':0,'라인프렌즈 스퀘어 명동점':num(d26,228,2),'홍대점':num(d26,229,2),'라인프렌즈 스퀘어 성수점':num(d26,230,2),'분당스퀘어':num(d26,231,2),'인사동점':num(d26,232,2)};
-
-  // 브랜드 LFSQ
-  const lfsq_b=[];
-  for(let i=83;i<110;i++){const nm=d26[i]&&d26[i][1],rv=d26[i]&&d26[i][2];if(nm&&typeof rv==='number'&&String(nm)!=='총합계')lfsq_b.push({n:String(nm).trim(),v:rv});}
-
-  // 브랜드 LC
-  const brands_lc={ARTIST:[],ORIGINAL:[],Patnership:[]};
-  let cur=null;
-  for(let i=128;i<175;i++){
-    const nm=d26[i]&&d26[i][1],rv=d26[i]&&d26[i][2];
-    if(!nm) continue;
-    const s=String(nm).trim();
-    if(['ARTIST','ORIGINAL','Patnership'].includes(s)){cur=s;continue;}
-    if(s==='총합계') continue;
-    if(cur&&typeof rv==='number') brands_lc[cur].push({n:s,v:rv});
-  }
-
-  const multi_lic=ip_l.LFSQ, lc_lic=total_lic26-multi_lic;
-
-  D={
-    meta:{month:'26년 4월',prev_month:'25년 4월'},
-    kpi:{total26,lic26:total_lic26,total25,lic25,multi_lic,lc_lic,multi_pct:parseFloat((multi_lic/total_lic26*100).toFixed(1)),lc_pct:parseFloat((lc_lic/total_lic26*100).toFixed(1))},
-    ip:['LFSQ','ORIGINAL','ARTIST','Patnership'].map(g=>({ip:g,total:ip_t[g],lic:ip_l[g],lic25:ip25[g]})),
-    md:Object.entries(md_t).flatMap(([ip,mds])=>Object.entries(mds).map(([md,total])=>({ip,md,total,lic:md_l[ip]?.[md]||0}))),
-    channels:[
-      ...['통합몰','스마트스토어','카카오커머스','29CM'].map(ch=>({type:'온라인',ch,total:ch_t[ch],lic:ch_l[ch]})),
-      ...['라인프렌즈 스퀘어 명동점','홍대점','라인프렌즈 스퀘어 성수점','인사동점','분당스퀘어'].map(ch=>({type:'오프라인',ch,total:ch_t[ch],lic:ch_l[ch]}))
-    ],
-    brands:{LFSQ:lfsq_b,...brands_lc}
-  };
+function show(data){
+  D=data;
+  document.getElementById('overlay').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('hTitle').textContent=`LFSQ MD 실적 대시보드 · ${D.meta.month}`;
   renderAll();
 }
 
-/* ── 파일 업로드 이벤트 ── */
-document.getElementById('fileInput').addEventListener('change',function(e){
-  const file=e.target.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    try{
-      const wb=XLSX.read(ev.target.result,{type:'binary'});
-      parseExcel(wb);
-      const uz=document.getElementById('uploadZone');
-      uz.classList.add('loaded');
-      uz.querySelector('.uz-text').innerHTML=`<b>✅ ${file.name}</b><br>데이터 로드 완료`;
-    }catch(err){alert('파일 파싱 오류: '+err.message);}
+function showOverlay(){
+  document.getElementById('overlay').style.display='flex';
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('fileInput').value='';
+}
+
+function processFile(file){
+  document.getElementById('loadMsg').classList.add('show');
+  const rd=new FileReader();
+  rd.onload=e=>{
+    try{const wb=XLSX.read(e.target.result,{type:'binary',cellDates:true});const d=parseExcel(wb);if(d)show(d);else document.getElementById('loadMsg').classList.remove('show');}
+    catch(err){alert('파일 처리 오류: '+err.message);document.getElementById('loadMsg').classList.remove('show');}
   };
-  reader.readAsBinaryString(file);
-});
+  rd.readAsBinaryString(file);
+}
 
-/* 드래그앤드롭 */
-const uz=document.getElementById('uploadZone');
-uz.addEventListener('dragover',e=>{e.preventDefault();uz.style.borderColor='#185FA5';});
-uz.addEventListener('dragleave',()=>{uz.style.borderColor='';});
-uz.addEventListener('drop',e=>{
-  e.preventDefault(); uz.style.borderColor='';
-  const file=e.dataTransfer.files[0]; if(!file) return;
-  const inp=document.getElementById('fileInput');
-  const dt=new DataTransfer(); dt.items.add(file); inp.files=dt.files;
-  inp.dispatchEvent(new Event('change'));
-});
-
-/* ── 초기 data.json 로드 ── */
-fetch('data.json')
-  .then(r=>r.ok?r.json():null)
-  .then(json=>{if(json){D=json;renderAll();}})
-  .catch(()=>{});
+document.getElementById('fileInput').addEventListener('change',e=>{if(e.target.files[0])processFile(e.target.files[0]);});
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);});
 </script>
 </body>
 </html>
