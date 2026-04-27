@@ -387,6 +387,12 @@ const dz=document.getElementById('dropZone');
 dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
 dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);});
+
+/* ── data.json 자동 로드 (GitHub Pages용) ── */
+fetch('data.json')
+  .then(r=>r.ok?r.json():null)
+  .then(json=>{if(json)show(json);})
+  .catch(()=>{});
 </script>
 </body>
 </html>
