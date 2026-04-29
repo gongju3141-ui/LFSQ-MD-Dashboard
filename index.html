@@ -6,141 +6,182 @@
 <title>LFSQ MD 실적 대시보드 · 2026년 4월</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#F7F6F3;--sf:#fff;--s2:#F2F1ED;--bd:#E2E0DA;--b2:#CCCAC3;--t1:#1A1A18;--t2:#5F5E5A;--t3:#9B9993;--blue:#185FA5;--bl:#E6F1FB;--bbd:#B5D4F4;--green:#0F6E56;--gl:#E1F5EE;--gbd:#9FE1CB;--amber:#854F0B;--al:#FAEEDA;--abd:#FAC775;--red:#A32D2D;--r:10px;--rs:6px;--gap:12px}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17.5px;color:var(--t1);background:var(--bg);min-height:100vh}
-.wrap{max-width:1200px;margin:0 auto;padding:24px 20px 60px}
-.header{display:flex;align-items:center;gap:14px;margin-bottom:1.2rem;padding-bottom:.9rem;border-bottom:1.5px solid var(--bd)}
-.hl h1{font-size:23.5px;font-weight:500;letter-spacing:-.01em}
-.hl .sub{font-size:14.5px;color:var(--t3);margin-top:2px}
-.krow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin-bottom:1.2rem}
-.kpi{background:var(--s2);border-radius:var(--rs);padding:16px 18px}
-.ki{font-size:22px;margin-bottom:5px}.kl{font-size:14.5px;color:var(--t2);margin-bottom:4px}
-.kv{font-size:31px;font-weight:500}.ks{font-size:14.5px;color:var(--t3);margin-top:2px}
-.ky{font-size:14.5px;font-weight:500;margin-top:5px;padding:3px 9px;border-radius:20px;display:inline-block}
+:root{
+  --bg:#F7F6F3;--sf:#fff;--s2:#F2F1ED;--bd:#E2E0DA;--b2:#CCCAC3;
+  --t1:#1A1A18;--t2:#5F5E5A;--t3:#9B9993;
+  --blue:#185FA5;--bl:#E6F1FB;--bbd:#B5D4F4;
+  --green:#0F6E56;--gl:#E1F5EE;--gbd:#9FE1CB;
+  --amber:#854F0B;--al:#FAEEDA;--abd:#FAC775;
+  --red:#A32D2D;--r:10px;--rs:6px;--gap:14px
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;color:var(--t1);background:var(--bg);min-height:100vh}
+.wrap{max-width:1440px;margin:0 auto;padding:20px 16px 60px}
+.header{display:flex;align-items:center;gap:14px;margin-bottom:1.3rem;padding-bottom:.85rem;border-bottom:1.5px solid var(--bd)}
+.hl h1{font-size:22px;font-weight:500;letter-spacing:-.01em}
+.hl .sub{font-size:13px;color:var(--t3);margin-top:2px}
+.sec-title{font-size:17px;font-weight:500;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.sec-title .tag{font-size:12px;background:var(--s2);color:var(--t2);padding:2px 8px;border-radius:20px;font-weight:400}
+.krow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin-bottom:1.3rem}
+.kpi{background:var(--s2);border-radius:var(--rs);padding:12px 14px}
+.ki{font-size:20px;margin-bottom:4px}.kl{font-size:13px;color:var(--t2);margin-bottom:3px}
+.kv{font-size:28px;font-weight:500}.ks{font-size:13px;color:var(--t3);margin-top:2px}
+.ky{font-size:13px;font-weight:500;margin-top:4px;padding:2px 8px;border-radius:20px;display:inline-block}
 .ydn{background:#FCEBEB;color:var(--red)}.yup{background:var(--gl);color:var(--green)}
 .kb{background:var(--bl);border:1px solid var(--bbd)}.kb .kv{color:var(--blue)}.kb .kl,.kb .ki,.kb .ks{color:#378ADD}
 .kg{background:var(--gl);border:1px solid var(--gbd)}.kg .kv{color:var(--green)}.kg .kl,.kg .ki,.kg .ks{color:#1D9E75}
 .ka{background:var(--al);border:1px solid var(--abd)}.ka .kv{color:var(--amber)}.ka .kl,.ka .ki,.ka .ks{color:#BA7517}
-.mv{display:flex;align-items:baseline;gap:6px;font-size:17.5px;font-weight:500;margin-top:4px;line-height:1.5}
-.mvb{font-size:13px;color:var(--t3)}
-.sbar{display:flex;height:9px;border-radius:4px;overflow:hidden;margin:6px 0 4px}
-.slbl{display:flex;justify-content:space-between;font-size:13px}
-.card{background:var(--sf);border:0.5px solid var(--bd);border-radius:var(--r);padding:18px}
-.ct{font-size:17.5px;font-weight:500;margin-bottom:14px}
-.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap);margin-bottom:1.2rem}
-.mb{margin-bottom:1.2rem}
-.leg{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap}
-.li{display:flex;align-items:center;gap:6px;font-size:14.5px;color:var(--t2)}
-.ld{width:12px;height:12px;border-radius:2px;flex-shrink:0}
-.br{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-.bl2{font-size:14.5px;color:var(--t2);width:96px;text-align:right;flex-shrink:0}
-.bt{flex:1;height:20px;background:var(--s2);border-radius:3px;overflow:hidden;position:relative}
+.mv{display:flex;align-items:baseline;gap:5px;font-size:15px;font-weight:500;margin-top:3px;line-height:1.5}
+.mvb{font-size:12px;color:var(--t3)}
+.sbar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:5px 0 3px}
+.slbl{display:flex;justify-content:space-between;font-size:12px}
+.card{background:var(--sf);border:0.5px solid var(--bd);border-radius:var(--r);padding:16px}
+.ct{font-size:15px;font-weight:500;margin-bottom:11px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap);margin-bottom:1.3rem}
+.mb{margin-bottom:1.3rem}
+.leg{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--t2)}
+.ld{width:11px;height:11px;border-radius:2px;flex-shrink:0}
+.br{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bl2{font-size:13px;color:var(--t2);width:82px;text-align:right;flex-shrink:0}
+.bt{flex:1;height:18px;background:var(--s2);border-radius:3px;overflow:hidden;position:relative}
 .bf{height:100%;border-radius:3px}
 .blo{position:absolute;top:0;left:0;height:100%;border-radius:3px;opacity:.9}
-.bv{font-size:12px;color:var(--t2);width:130px;text-align:right;flex-shrink:0;white-space:nowrap;line-height:1.45}
-#treemap{width:100%;height:320px;position:relative;border-radius:8px;overflow:hidden}
-.tmc{position:absolute;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 13px;cursor:default;transition:filter .15s}
-.tmc:hover{filter:brightness(1.1)}
-.tmi{font-size:11.5px;font-weight:500;color:rgba(255,255,255,.75);letter-spacing:.04em}
-.tmv{font-size:16px;font-weight:500;color:#fff}.tmp{font-size:13px;color:rgba(255,255,255,.75);margin-top:2px}
-.tmy{font-size:11.5px;margin-top:3px;padding:2px 7px;border-radius:8px;background:rgba(0,0,0,.22);color:#fff;display:inline-block}
-.sw{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;flex-wrap:wrap;gap:7px}
+.bv{font-size:11px;color:var(--t2);width:122px;text-align:right;flex-shrink:0;white-space:nowrap;line-height:1.4}
+.donut-wrap{position:relative;width:100%;height:380px}
+#donutCanvas,#lineCanvas{position:absolute;top:0;left:0}
+/* ── 분기별 표 ── */
+.qtbl{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+.qtbl th,.qtbl td{padding:4px 8px;border:0.5px solid #D8D6CF;vertical-align:middle}
+.qtbl th{background:#ECEAE4;color:#5F5E5A;font-weight:500;text-align:center}
+.qtbl th.lh,.qtbl td.lh{text-align:left}
+.qtbl td{text-align:right;font-variant-numeric:tabular-nums;background:#fff}
+.qtbl .r-ip td{background:#E8E6E0;font-weight:600;color:#2A2A26;border-top:1.5px solid #BCBAB3}
+.qtbl .r-md td{background:#F5F4F0;color:#5F5E5A;font-size:11px}
+.qtbl .r-etc td{background:#F0EEE8;color:#888780;font-size:11px;font-style:italic}
+.qtbl .c26{background:#FFF8E1!important;color:#854F0B!important;font-weight:600}
+.qtbl .r-ip .c26{background:#FFEDBA!important;color:#854F0B!important}
+.qtbl .sep-l{border-left:2px solid #EF9F27!important}
+.qtbl .sep-r{border-right:2px solid #EF9F27!important}
+.qtbl .cyoy{background:#F4F2EC!important;color:#5A4A8A!important;font-size:11px}
+.yoy-up{color:#A32D2D;font-weight:600}
+.yoy-dn{color:#185FA5;font-weight:600}
+/* ── 슬라이서 ── */
+.sw{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px}
 .slic{display:flex;border-radius:4px;overflow:hidden;border:0.5px solid var(--b2);width:fit-content}
-.sb{padding:3px 11px;font-size:11.5px;cursor:pointer;border:none;border-right:0.5px solid var(--b2);color:#fff;font-weight:500;white-space:nowrap;opacity:.6;line-height:1.5}
+.sb{padding:3px 10px;font-size:11px;cursor:pointer;border:none;border-right:0.5px solid var(--b2);color:#fff;font-weight:500;white-space:nowrap;opacity:.6;line-height:1.6}
 .sb:last-child{border-right:none}.sb.on{opacity:1}.sb:hover:not(.on){opacity:.85}
 .sa{background:#888780}.slfsq{background:#378ADD}.sorig{background:#1D9E75}.sart{background:#EF9F27}.spart{background:#D4537E}
-.scall{background:#5F5E5A}.scon{background:#185FA5}.scoff{background:#0F6E56}
-.tbl{width:100%;border-collapse:collapse;font-size:15.25px;table-layout:fixed}
-.tbl th{padding:9px 12px;text-align:left;font-weight:500;color:var(--t2);border-bottom:0.5px solid var(--bd);background:var(--s2);white-space:nowrap}
+.sip-all{background:#5F5E5A}.sip-lfsq{background:#378ADD}.sip-orig{background:#1D9E75}.sip-art{background:#EF9F27}.sip-part{background:#D4537E}
+/* ── 테이블 ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.tbl th{padding:7px 10px;text-align:left;font-weight:500;color:var(--t2);border-bottom:0.5px solid var(--bd);background:var(--s2);white-space:nowrap}
 .tbl th.n{text-align:right}
-.tbl td{padding:8px 12px;border-bottom:0.5px solid var(--bd);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl td{padding:5px 10px;border-bottom:0.5px solid var(--bd);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tbl td.n{text-align:right;font-variant-numeric:tabular-nums}
 .tbl tr:hover td{background:var(--s2)}
 .tbl col.cn{width:34%}.tbl col.cd{width:22%}
 .rl td{background:#EEF4FB!important;color:#185FA5;font-weight:500;border-top:1px solid #B5D4F4}
-.ro td{background:#EDF6F2!important;color:#0F6E56;font-weight:500;border-top:1px solid #9FE1CB}
-.ra td{background:#FEF6E6!important;color:#854F0B;font-weight:500;border-top:1px solid #FAC775}
-.rp td{background:#FDF0F5!important;color:#993556;font-weight:500;border-top:1px solid #F4C0D1}
+.ro td{background:#EDF6F2!important;color:#157A5A;font-weight:500;border-top:1px solid #9FE1CB}
+.ra td{background:#FEF6E6!important;color:#C27A0A;font-weight:500;border-top:1px solid #FAC775}
+.rp td{background:#FDF0F5!important;color:#B33A67;font-weight:500;border-top:1px solid #F4C0D1}
 .ron td{background:#EEF4FB!important;color:#185FA5;font-weight:500;border-top:1px solid #B5D4F4}
-.rof td{background:#EDF6F2!important;color:#0F6E56;font-weight:500;border-top:1px solid #9FE1CB}
-.ibr{display:flex;align-items:center;gap:6px}
-.ibt{flex:1;height:8px;background:var(--s2);border-radius:2px;overflow:hidden}
+.rof td{background:#EDF6F2!important;color:#157A5A;font-weight:500;border-top:1px solid #9FE1CB}
+.ibr{display:flex;align-items:center;gap:5px}
+.ibt{flex:1;height:7px;background:var(--s2);border-radius:2px;overflow:hidden}
 .ibf{height:100%;border-radius:2px}
-.ibp{font-size:12px;min-width:42px;text-align:right;white-space:nowrap}
-.brs{margin-bottom:1.1rem}
-.brh{display:flex;align-items:center;gap:9px;margin-bottom:9px;padding-bottom:5px;border-bottom:0.5px solid var(--bd)}
-.brh .bdg{font-size:14.5px;font-weight:500;padding:3px 10px;border-radius:20px}
-.brg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
-.brw{display:flex;align-items:center;gap:6px;margin-bottom:3px}
-.brn{font-size:14.5px;color:var(--t2);width:120px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brt{flex:1;height:14px;background:var(--s2);border-radius:2px;overflow:hidden}
+.ibp{font-size:11px;min-width:36px;text-align:right;white-space:nowrap}
+.brs{margin-bottom:.9rem}
+.brh{display:flex;align-items:center;gap:7px;margin-bottom:7px;padding-bottom:4px;border-bottom:0.5px solid var(--bd)}
+.brh .bdg{font-size:12px;font-weight:500;padding:2px 9px;border-radius:20px}
+.brg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
+.brw{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.brn{font-size:12px;color:var(--t2);width:100px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brt{flex:1;height:12px;background:var(--s2);border-radius:2px;overflow:hidden}
 .brf{height:100%;border-radius:2px;opacity:.85}
-.bri{font-size:12px;color:var(--t2);width:110px;text-align:right;flex-shrink:0;white-space:nowrap}
-@media(max-width:680px){.krow{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+.bri{font-size:11px;color:var(--t2);width:95px;text-align:right;flex-shrink:0;white-space:nowrap}
+@media(max-width:700px){.krow{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <div class="header">
-  <div style="font-size:24px;line-height:1;flex-shrink:0">📊</div>
+  <div style="font-size:26px;line-height:1;flex-shrink:0">📊</div>
   <div class="hl">
     <h1>LFSQ MD 실적 대시보드 · 2026년 4월 누계</h1>
-    <div class="sub">회계연도 기준 (4월 시작) · 기준일 2026.04.26 · 26년 실적 시트 / 25년 실적 시트 기반 · 전년 동월 YOY 포함</div>
+    <div class="sub">회계연도 기준 (4월 시작) · 기준일 2026.04.26 · 단위: 백만원</div>
   </div>
 </div>
 
+<div class="mb">
+  <div class="sec-title">① 26년 분기별 매출 추이 <span class="tag">IP별 · MD별 세분화 · YOY 포함</span></div>
+  <div class="card" style="padding:12px">
+    <div style="font-size:12px;color:var(--t3);margin-bottom:10px">회계연도 기준 1Q(4~6월)/2Q(7~9월)/3Q(10~12월)/4Q(1~3월) · 26년 1Q = 4월 누계 · 단위: 백만원 · 26년 매출 없는 IP → 기타IP 통합</div>
+    <div style="overflow-x:auto">
+      <table class="qtbl">
+        <thead>
+          <tr>
+            <th rowspan="2" class="lh" style="min-width:72px">IP 그룹</th>
+            <th rowspan="2" class="lh" style="min-width:68px">MD 구분</th>
+            <th colspan="3" class="sep-l sep-r" style="background:#FFF3CC;color:#854F0B">26년 1Q (4월 누계)</th>
+            <th colspan="3" style="background:#ECEAE4">25년 1Q 합계</th>
+            <th colspan="2" style="background:#F0EEE8;font-size:11px">25년 4월</th>
+            <th colspan="2" style="background:#F0EEE8;font-size:11px">25년 5월</th>
+            <th colspan="2" style="background:#F0EEE8;font-size:11px">25년 6월</th>
+            <th colspan="3" style="background:#ECEAE4">25년 2Q</th>
+            <th colspan="3" style="background:#ECEAE4">25년 3Q</th>
+            <th colspan="3" style="background:#ECEAE4">25년 4Q</th>
+            <th colspan="2" style="background:#EAE6F4;color:#5A4A8A">YOY (1Q)</th>
+          </tr>
+          <tr>
+            <th class="sep-l c26" style="min-width:52px">총매출</th><th class="c26">사입</th><th class="sep-r c26">사입%</th>
+            <th>총매출</th><th>사입</th><th>사입%</th>
+            <th>사입</th><th>사입%</th>
+            <th>사입</th><th>사입%</th>
+            <th>사입</th><th>사입%</th>
+            <th>총매출</th><th>사입</th><th>사입%</th>
+            <th>총매출</th><th>사입</th><th>사입%</th>
+            <th>총매출</th><th>사입</th><th>사입%</th>
+            <th class="cyoy">총매출</th><th class="cyoy">사입</th>
+          </tr>
+        </thead>
+        <tbody id="qtblBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">② 2026년 4월 실적 대시보드</div>
+
 <div class="krow">
-  <div class="kpi">
-    <div class="ki">🏪</div><div class="kl">총 매출</div>
-    <div class="kv">20.0억</div>
-    <div class="ks">25년 4월 15.6억</div>
-    <div class="ky yup">▲ 28.1% YOY</div>
-  </div>
-  <div class="kpi kb">
-    <div class="ki">🛒</div><div class="kl">사입(Buying) 매출</div>
-    <div class="kv">5.20억</div>
-    <div class="ks">25년 4월 2.41억</div>
-    <div class="ky yup">▲ 115.4% YOY</div>
-  </div>
-  <div class="kpi kg">
-    <div class="ki">📊</div><div class="kl">총매출 대비 사입 비중</div>
-    <div class="kv">26.0%</div>
-    <div class="ks">25년 4월 15.5%</div>
-    <div class="ky yup">▲ 10.5%p YOY</div>
-  </div>
+  <div class="kpi"><div class="ki">🏪</div><div class="kl">총 매출</div><div class="kv">20.0억</div><div class="ks">25년 4월 15.6억</div><div class="ky yup">▲ 28.1% YOY</div></div>
+  <div class="kpi kb"><div class="ki">🛒</div><div class="kl">사입(Buying) 매출</div><div class="kv">5.20억</div><div class="ks">25년 4월 2.41억</div><div class="ky yup">▲ 115.4% YOY</div></div>
+  <div class="kpi kg"><div class="ki">📊</div><div class="kl">총매출 대비 사입 비중</div><div class="kv">26.0%</div><div class="ks">25년 4월 15.5%</div><div class="ky yup">▲ 10.5%p YOY</div></div>
   <div class="kpi ka">
     <div class="ki">🏷️</div><div class="kl">MULTI vs LC 사입 비중</div>
-    <div class="mv"><span class="mvb">·</span><span style="color:#185FA5;font-weight:500">MULTI 47.7%</span></div>
+    <div class="mv"><span class="mvb">·</span><span style="color:#378ADD;font-weight:500">MULTI 47.7%</span></div>
     <div class="mv"><span class="mvb">·</span><span style="color:#BA7517;font-weight:500">LC 52.3%</span></div>
-    <div class="sbar" style="margin-top:6px">
-      <div style="flex:47.7;background:#378ADD;border-radius:3px 0 0 3px"></div>
-      <div style="flex:52.3;background:#EF9F27;border-radius:0 3px 3px 0"></div>
+    <div class="sbar" style="margin-top:5px">
+      <div style="flex:47.7;background:#378ADD;border-radius:4px 0 0 4px"></div>
+      <div style="flex:52.3;background:#EF9F27;border-radius:0 4px 4px 0"></div>
     </div>
-    <div class="slbl">
-      <span style="color:#378ADD">MULTI 248백만</span>
-      <span style="color:#EF9F27">LC 272백만</span>
-    </div>
+    <div class="slbl"><span style="color:#378ADD">MULTI 248백만</span><span style="color:#EF9F27">LC 272백만</span></div>
   </div>
 </div>
 
 <div class="g2">
   <div class="card">
     <div class="ct">IP 그룹별 총매출 vs 사입(Buying) 매출</div>
-    <div class="leg">
-      <div class="li"><div class="ld" style="background:#B5D4F4"></div>총매출</div>
-      <div class="li"><div class="ld" style="background:#185FA5"></div>사입(Buying)</div>
-    </div>
+    <div class="leg"><div class="li"><div class="ld" style="background:#B5D4F4"></div>총매출</div><div class="li"><div class="ld" style="background:#185FA5"></div>사입(Buying)</div></div>
     <div id="ipBars"></div>
-    <div style="margin-top:9px;padding-top:7px;border-top:0.5px solid var(--bd)">
-      <div style="font-size:8px;color:var(--t3);margin-bottom:4px">YOY 사입 비교 (25년 4월 → 26년 4월, 단위: 백만원)</div>
+    <div style="margin-top:10px;padding-top:8px;border-top:0.5px solid var(--bd)">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:5px">YOY 사입 비교 (25년 4월 → 26년 4월)</div>
       <div id="yoyBars"></div>
     </div>
   </div>
-  <div class="card">
+  <div class="card" style="overflow:visible">
     <div class="ct">사입(Buying) 매출 구성</div>
-    <div style="font-size:8px;color:var(--t3);margin-bottom:7px">면적 = 사입 비중 · 단위: 백만원</div>
-    <div id="treemap"></div>
+    <div class="donut-wrap"><canvas id="donutCanvas"></canvas><canvas id="lineCanvas"></canvas></div>
   </div>
 </div>
 
@@ -158,8 +199,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div style="overflow-x:auto">
     <table class="tbl"><colgroup><col class="cn"><col class="cd"><col class="cd"><col class="cd"></colgroup>
       <thead><tr><th>MD 구분 IP</th><th class="n">총매출 (백만)</th><th class="n">사입 매출 (백만)</th><th class="n">사입 비중</th></tr></thead>
-      <tbody id="mdBody"></tbody>
-    </table>
+      <tbody id="mdBody"></tbody></table>
   </div>
 </div>
 
@@ -172,16 +212,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="sw">
     <div class="ct" style="margin-bottom:0">채널별 매출 현황</div>
     <div class="slic">
-      <button class="sb scall on" onclick="slCh('all',this)">전체</button>
-      <button class="sb scon" onclick="slCh('온라인',this)">온라인</button>
-      <button class="sb scoff" onclick="slCh('오프라인',this)">오프라인</button>
+      <button class="sb sip-all on" onclick="slIp('all',this)">전체</button>
+      <button class="sb sip-lfsq" onclick="slIp('LFSQ',this)">LFSQ</button>
+      <button class="sb sip-orig" onclick="slIp('ORIGINAL',this)">ORIGINAL</button>
+      <button class="sb sip-art" onclick="slIp('ARTIST',this)">ARTIST</button>
+      <button class="sb sip-part" onclick="slIp('Patnership',this)">Patnership</button>
     </div>
   </div>
   <div style="overflow-x:auto">
     <table class="tbl"><colgroup><col class="cn"><col class="cd"><col class="cd"><col class="cd"></colgroup>
       <thead><tr><th>채널명</th><th class="n">총매출 (백만)</th><th class="n">사입 매출 (백만)</th><th class="n">사입 비중</th></tr></thead>
-      <tbody id="chBody"></tbody>
-    </table>
+      <tbody id="chBody"></tbody></table>
   </div>
 </div>
 
@@ -191,165 +232,308 @@ const IPC={LFSQ:'#378ADD',ORIGINAL:'#1D9E75',ARTIST:'#EF9F27',Patnership:'#D4537
 const IPL={LFSQ:'#B5D4F4',ORIGINAL:'#9FE1CB',ARTIST:'#FAC775',Patnership:'#F4C0D1'};
 const GRP=['LFSQ','ORIGINAL','ARTIST','Patnership'];
 const SR={LFSQ:'rl',ORIGINAL:'ro',ARTIST:'ra',Patnership:'rp'};
-const BD={LFSQ:'background:#E6F1FB;color:#185FA5',ORIGINAL:'background:#E1F5EE;color:#0F6E56',ARTIST:'background:#FAEEDA;color:#854F0B',Patnership:'background:#FBEAF0;color:#993556'};
+const BD={LFSQ:'background:#E6F1FB;color:#185FA5',ORIGINAL:'background:#E1F5EE;color:#157A5A',ARTIST:'background:#FAEEDA;color:#C27A0A',Patnership:'background:#FBEAF0;color:#B33A67'};
 
-const D={
-  ip:[
-    {ip:'LFSQ',     total:248072943, lic:248072943, lic25:109747352},
-    {ip:'ORIGINAL', total:582487316, lic:205832478, lic25:54730240},
-    {ip:'ARTIST',   total:1023379290,lic:25710197,  lic25:11387350},
-    {ip:'Patnership',total:141114097,lic:40471502,  lic25:65431400}
-  ],
-  md:[
-    {ip:'LFSQ',md:'MULTI',total:247221659,lic:247221659},
-    {ip:'LFSQ',md:'LFSQ_PB',total:851283,lic:851283},
-    {ip:'ORIGINAL',md:'ZNF',total:387878926,lic:172078611},
-    {ip:'ORIGINAL',md:'MININI',total:61141446,lic:24127796},
-    {ip:'ORIGINAL',md:'B&F',total:60437274,lic:9565667},
-    {ip:'ORIGINAL',md:'COLLER',total:63815426,lic:60404},
-    {ip:'ORIGINAL',md:'SSEB',total:5767963,lic:0},
-    {ip:'ORIGINAL',md:'DHB',total:2528887,lic:0},
-    {ip:'ORIGINAL',md:'LTC',total:917394,lic:0},
-    {ip:'ARTIST',md:'BT21',total:796160460,lic:24794975},
-    {ip:'ARTIST',md:'NCTD',total:97453937,lic:0},
-    {ip:'ARTIST',md:'TRZ',total:88443020,lic:0},
-    {ip:'ARTIST',md:'ZB1',total:22773960,lic:915222},
-    {ip:'ARTIST',md:'NJ',total:8892029,lic:0},
-    {ip:'ARTIST',md:'PLAVE',total:4619640,lic:0},
-    {ip:'ARTIST',md:'ATZ',total:4136597,lic:0},
-    {ip:'ARTIST',md:'IDLE',total:899647,lic:0},
-    {ip:'Patnership',md:'JUG',total:127918317,lic:34457567},
-    {ip:'Patnership',md:'DT',total:6082144,lic:2200480},
-    {ip:'Patnership',md:'MONA',total:5973527,lic:2673345},
-    {ip:'Patnership',md:'PIC',total:1140110,lic:1140110}
-  ],
-  channels:[
-    {type:'온라인',ch:'통합몰',total:439169304,lic:95630807},
-    {type:'온라인',ch:'스마트스토어',total:129771121,lic:42397986},
-    {type:'온라인',ch:'카카오커머스',total:42012534,lic:10681091},
-    {type:'온라인',ch:'29CM',total:17388220,lic:0},
-    {type:'오프라인',ch:'라인프렌즈 스퀘어 명동점',total:666718169,lic:123922153},
-    {type:'오프라인',ch:'홍대점',total:382236651,lic:60923675},
-    {type:'오프라인',ch:'라인프렌즈 스퀘어 성수점',total:279559870,lic:178328548},
-    {type:'오프라인',ch:'인사동점',total:34398420,lic:6520895},
-    {type:'오프라인',ch:'분당스퀘어',total:5476499,lic:1681965}
-  ],
-  brands:{
-    LFSQ:[
-      {n:'누가사',v:143525473},{n:'케이팝데몬헌터스',v:38110785},{n:'가나디',v:13506496},
-      {n:'퍼글러',v:12266821},{n:'랜덤스퀘어',v:6115829},{n:'미피',v:5561044},
-      {n:'포켓몬스터',v:5447315},{n:'테디테일즈',v:4369355},{n:'에이비페브',v:3323914},
-      {n:'미키&미니',v:3188237},{n:'체로프몽모',v:3136158},{n:'짱구는못말려',v:3091921},
-      {n:'티니핑',v:1637473},{n:'티머니',v:1083268},{n:'핸드타월',v:851283},
-      {n:'산리오',v:753248},{n:'수북즈',v:706920},{n:'젤리버블',v:378454},
-      {n:'베베더오리',v:279041},{n:'위시캣',v:236019},{n:'극락쿼카',v:115533},
-      {n:'와사비베어',v:86605},{n:'패트와매트',v:76820},{n:'MERGE',v:55925},
-      {n:'위드마이캡틴',v:50455},{n:'오롤리데이',v:47948},{n:'파피묭',v:26989},
-      {n:'메종듀스',v:22727},{n:'파파고파파',v:17615},{n:'라이트업',v:3273}
-    ],
-    ORIGINAL:[
-      {n:'[ZNF]로이체',v:160131377},{n:'[MININI]아이피즈',v:14046166},
-      {n:'[ZNF]케이스티파이',v:10105293},{n:'[MININI]명성',v:6805462},
-      {n:'[B&F]코코도르',v:3338173},{n:'[B&F]25y그린에디션',v:1873828},
-      {n:'[ZNF]롬앤',v:1841940},{n:'[MININI]뉴니스',v:1476071},
-      {n:'[B&F]뉴니스',v:1292461},{n:'[B&F]티머니',v:1031751},
-      {n:'[B&F]지애드스포츠',v:832151},{n:'[MININI]에이블리쁘그세',v:662940},
-      {n:'[B&F]잇츠베러',v:661769},{n:'[MININI]티머니',v:602346},
-      {n:'[B&F]영케미칼',v:307810},{n:'[MININI]코코도르',v:233401},
-      {n:'[MININI]탈리다쿰',v:199088},{n:'[B&F]하미글로벌',v:173258},
-      {n:'[MININI]젝시오',v:77777},{n:'[B&F]명성',v:54464},
-      {n:'[COLLER]베베더오리',v:32768},{n:'[COLLER]다이노탱',v:27636},
-      {n:'[MININI]OEM',v:24545}
-    ],
-    ARTIST:[
-      {n:'[BT21]아이컬러즈',v:11846045},{n:'[BT21]티머니',v:7005983},
-      {n:'[BT21]SOL',v:5007604},{n:'[ZB1]로이체',v:764380},
-      {n:'[BT21]위즈덤',v:751143},{n:'[ZB1]스파오',v:150842},
-      {n:'[BT21]명성',v:75946},{n:'[BT21]로이체',v:68155},
-      {n:'[BT21]엘라고',v:23789},{n:'[BT21]모노폴리',v:16309}
-    ],
-    Patnership:[
-      {n:'[JUG]나라홈데코',v:15383768},{n:'[JUG]미스티',v:14580859},
-      {n:'[MONA]MNH',v:2673345},{n:'[JUG]아이피즈',v:2353645},
-      {n:'[DT]다이노탱',v:2042318},{n:'[JUG]스튜디오천재',v:1260813},
-      {n:'[PIC]피클스더프로그',v:1140110},{n:'[JUG]위메이크페인팅',v:790716},
-      {n:'[DT]로이체',v:114662},{n:'[JUG]조구만스튜디오',v:87767},
-      {n:'[DT]코코인터내셔널',v:43500}
-    ]
-  }
+/* ── 25년 데이터 [4월,5월,6월,7월,8월,9월,10월,11월,12월,1월,2월,3월] ── */
+const D25={
+  TOTAL:{
+    t:[1558949616,1773320381,3592713438,2453812594,4004691435,3576925090,3566548190,3566548190,3566548192,3933875706,3933875706,3933875706],
+    l:[241296342,358919873,504280492,290982609,317731483,207288700,701266710,701266710,701266710,393438218,393438218,393438218]
+  },
+  LFSQ:    {l:[109747352,169583829,74044446,77118802,106462403,67541016,498162128,498162128,498162128,169723962,169723962,169723962]},
+  MULTI:   {l:[109747352,169583829,74044446,77118802,106462403,67541016,498162128,498162128,498162128,169723962,169723962,169723962]},
+  LFSQ_PB: {l:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  ORIGINAL:{l:[54730240,53183306,47585392,55782985,67845572,46797595,119165077,119165077,119165077,72643166,72643166,72643167]},
+  ZNF:     {l:[0,0,0,0,0,0,32820972,32820972,32820973,37294773,37294773,37294773]},
+  MININI:  {l:[30869333,34156014,32717112,34256541,37531361,21420717,37829524,37829524,37829524,23711951,23711951,23711951]},
+  'B&F':   {l:[23232901,18757113,14661176,21262933,30041629,25244107,22387169,22387169,22387170,11499345,11499345,11499346]},
+  COLLER:  {l:[628006,270179,207104,263511,272582,132771,139949,139949,139949,137097,137097,137097]},
+  ARTIST:  {l:[11387350,58563477,171880452,78105734,53118902,19278748,19701647,19701647,19701649,105483252,105483252,105483253]},
+  BT21:    {l:[10058319,28834030,53358796,29460676,17706077,7134856,8771373,8771373,8771373,10191103,10191103,10191105]},
+  IDLE:    {l:[0,18808485,0,0,0,0,0,0,0,0,0,0]},
+  NCTD:    {l:[113847,80550,310829,0,189249,19011,0,0,0,0,0,0]},
+  NJ:      {l:[0,0,0,339541,214815,0,0,0,0,0,0,0]},
+  TRZ:     {l:[0,0,0,0,0,400748,152182,134347,50727,16909,0,0]},
+  ZB1:     {l:[880706,525031,55316975,43181569,30556999,10514989,7107077,7107077,7107079,1335180,1335180,1335180]},
+  RIIZE:   {l:[334478,10315381,2654417,5123948,4451762,1209144,1362688,8451352,1318295,0,0,0]},
+  ATZ:     {l:[0,0,60239435,0,0,0,0,0,0,0,0,0]},
+  PLAVE:   {l:[0,0,0,0,0,0,0,0,0,0,222782656,59071341]},
+  Patnership:{l:[65431400,77589261,210770202,79975088,90304606,73671341,64237857,64237857,64237858,45587837,45587837,45587838]},
+  JUG:     {l:[25783060,47500179,46654790,46824312,51811346,45040867,43332128,43332128,43332130,33450677,33450677,33450678]},
+  DT:      {l:[18581307,17093560,24855170,19872939,23065972,17491230,9646552,9646552,9646554,7522682,7522682,7522682]},
+  MONA:    {l:[15248297,7977272,133352910,7181240,9195728,7117664,7710414,7710414,7710415,3104066,3104066,3104066]},
+  PIC:     {l:[5818736,5018250,5907332,6096597,6231560,4021580,3548761,3548761,3548763,1510412,1510412,1510412]}
 };
 
-const M=n=>Math.round(n/1e6).toLocaleString();
+/* ── 26년 데이터 ── */
+const D26={
+  TOTAL:{t:1996730788,l:520087120},
+  LFSQ:{t:248072943,l:248072943}, MULTI:{t:247221659,l:247221659}, LFSQ_PB:{t:851283,l:851283},
+  ORIGINAL:{t:582487316,l:205832478}, ZNF:{t:387878926,l:172078611}, MININI:{t:61141446,l:24127796},
+  'B&F':{t:60437274,l:9565667}, COLLER:{t:63815426,l:60404},
+  SSEB:{t:5767963,l:0}, DHB:{t:2528887,l:0}, LTC:{t:917394,l:0},
+  ARTIST:{t:1023379290,l:25710197}, BT21:{t:796160460,l:24794975}, ZB1:{t:22773960,l:915222},
+  NCTD:{t:97453937,l:0}, TRZ:{t:88443020,l:0}, NJ:{t:8892029,l:0},
+  PLAVE:{t:4619640,l:0}, ATZ:{t:4136597,l:0}, IDLE:{t:899647,l:0},
+  Patnership:{t:141114097,l:40471502}, JUG:{t:127918317,l:34457567},
+  DT:{t:6082144,l:2200480}, MONA:{t:5973527,l:2673345}, PIC:{t:1140110,l:1140110},
+  ETC:{t:1677141,l:0}
+};
+
+const M=n=>(!n||n===0)?'—':Math.round(n/1e6).toLocaleString();
+const P=(l,t)=>(l&&t)?((l/t)*100).toFixed(0)+'%':'—';
+function yoyTag(v26,v25){
+  if(!v25||!v26)return'';
+  const r=((v26/v25-1)*100).toFixed(0);
+  return `<span class="${parseFloat(r)>=0?'yoy-up':'yoy-dn'}">${parseFloat(r)>=0?'▲':'▼'}${Math.abs(r)}%</span>`;
+}
 function ibar(l,t,c){
   if(!l||!t)return'<span style="color:var(--t3)">—</span>';
   const bw=Math.min(100,l/t*100).toFixed(0),p=(l/t*100).toFixed(1);
   return `<div class="ibr"><div class="ibt"><div class="ibf" style="width:${bw}%;background:${c}"></div></div><span class="ibp" style="color:${c}">${p}%</span></div>`;
 }
+
+const qs=(key,a,b)=>{const arr=(D25[key]||{}).l||[];return arr.slice(a,b).reduce((s,v)=>s+(v||0),0);};
+const qt=(key,a,b)=>{const arr=(D25[key]||{}).t||[];return arr.slice(a,b).reduce((s,v)=>s+(v||0),0);};
+const L=(key,i)=>(D25[key]?.l||[])[i]||0;
+
+/* ── 분기별 표 ── */
+function rQtbl(){
+  const STRUCTURE=[
+    {ip:'TOTAL',    label:'TOTAL',       activeMds:[],                               etcMds:[]},
+    {ip:'LFSQ',     label:'LFSQ',        activeMds:['MULTI','LFSQ_PB'],              etcMds:[]},
+    {ip:'ORIGINAL', label:'ORIGINAL',    activeMds:['ZNF','MININI',"B&F",'COLLER'],  etcMds:['SSEB','DHB','LTC']},
+    {ip:'ARTIST',   label:'ARTIST',      activeMds:['BT21','ZB1'],                   etcMds:['NCTD','TRZ','NJ','PLAVE','ATZ','IDLE']},
+    {ip:'Patnership',label:'Patnership', activeMds:['JUG','DT','MONA','PIC'],        etcMds:[]}
+  ];
+  const T_TOT={t1q:qt('TOTAL',0,3),t2q:qt('TOTAL',3,6),t3q:qt('TOTAL',6,9),t4q:qt('TOTAL',9,12)};
+  let h='';
+  STRUCTURE.forEach(({ip,label,activeMds,etcMds})=>{
+    const d26=D26[ip]||{t:0,l:0};
+    const lq1=qs(ip,0,3),lq2=qs(ip,3,6),lq3=qs(ip,6,9),lq4=qs(ip,9,12);
+    const lm4=L(ip,0),lm5=L(ip,1),lm6=L(ip,2);
+    const isT=ip==='TOTAL';
+    const tq1=isT?T_TOT.t1q:0,tq2=isT?T_TOT.t2q:0,tq3=isT?T_TOT.t3q:0,tq4=isT?T_TOT.t4q:0;
+    const rowspan=1+activeMds.length+(etcMds.length>0?1:0);
+    const c26t=d26.t?M(d26.t):'—', c26l=d26.l?M(d26.l):'—', c26p=P(d26.l,d26.t);
+    const ct1=tq1?M(tq1):'—', cl1=lq1?M(lq1):'—', cp1=(lq1&&tq1)?P(lq1,tq1):(lq1?'100%':'—');
+    const ct2=tq2?M(tq2):'—', cl2=lq2?M(lq2):'—', cp2=(lq2&&tq2)?P(lq2,tq2):(lq2?'100%':'—');
+    const ct3=tq3?M(tq3):'—', cl3=lq3?M(lq3):'—', cp3=(lq3&&tq3)?P(lq3,tq3):(lq3?'100%':'—');
+    const ct4=tq4?M(tq4):'—', cl4=lq4?M(lq4):'—', cp4=(lq4&&tq4)?P(lq4,tq4):(lq4?'100%':'—');
+    h+=`<tr class="r-ip">
+      <td class="lh" rowspan="${rowspan}">${label}</td>
+      <td class="lh" style="font-size:11px;opacity:.75">합산</td>
+      <td class="sep-l c26">${c26t}</td><td class="c26">${c26l}</td><td class="sep-r c26">${c26p}</td>
+      <td>${ct1}</td><td>${cl1}</td><td>${cp1}</td>
+      <td>${lm4?M(lm4):'—'}</td><td>${(lm4&&lq1)?P(lm4,lq1):'—'}</td>
+      <td>${lm5?M(lm5):'—'}</td><td>${(lm5&&lq1)?P(lm5,lq1):'—'}</td>
+      <td>${lm6?M(lm6):'—'}</td><td>${(lm6&&lq1)?P(lm6,lq1):'—'}</td>
+      <td>${ct2}</td><td>${cl2}</td><td>${cp2}</td>
+      <td>${ct3}</td><td>${cl3}</td><td>${cp3}</td>
+      <td>${ct4}</td><td>${cl4}</td><td>${cp4}</td>
+      <td class="cyoy">${isT?yoyTag(d26.t,T_TOT.t1q):''}</td>
+      <td class="cyoy">${yoyTag(d26.l,lm4||lq1)}</td>
+    </tr>`;
+    activeMds.forEach(md=>{
+      const dm=D26[md]||{t:0,l:0};
+      const ml4=L(md,0),ml5=L(md,1),ml6=L(md,2);
+      const mq1=qs(md,0,3),mq2=qs(md,3,6),mq3=qs(md,6,9),mq4=qs(md,9,12);
+      h+=`<tr class="r-md">
+        <td class="lh" style="padding-left:14px">└ ${md}</td>
+        <td class="sep-l c26">${dm.t?M(dm.t):'—'}</td><td class="c26">${dm.l?M(dm.l):'—'}</td><td class="sep-r c26">${P(dm.l,dm.t)}</td>
+        <td>${mq1?M(mq1):'—'}</td><td>${mq1?M(mq1):'—'}</td><td>${(ml4&&mq1)?P(ml4,mq1):'—'}</td>
+        <td>${ml4?M(ml4):'—'}</td><td>${(ml4&&mq1)?P(ml4,mq1):'—'}</td>
+        <td>${ml5?M(ml5):'—'}</td><td>${(ml5&&mq1)?P(ml5,mq1):'—'}</td>
+        <td>${ml6?M(ml6):'—'}</td><td>${(ml6&&mq1)?P(ml6,mq1):'—'}</td>
+        <td>${mq2?M(mq2):'—'}</td><td>${mq2?M(mq2):'—'}</td><td>—</td>
+        <td>${mq3?M(mq3):'—'}</td><td>${mq3?M(mq3):'—'}</td><td>—</td>
+        <td>${mq4?M(mq4):'—'}</td><td>${mq4?M(mq4):'—'}</td><td>—</td>
+        <td class="cyoy"></td><td class="cyoy">${yoyTag(dm.l,ml4||mq1)}</td>
+      </tr>`;
+    });
+    if(etcMds.length>0){
+      const et=etcMds.reduce((s,md)=>{const d=D26[md]||{t:0};return s+d.t;},0);
+      const el=etcMds.reduce((s,md)=>{const d=D26[md]||{l:0};return s+d.l;},0);
+      h+=`<tr class="r-etc">
+        <td class="lh" style="padding-left:14px" title="${etcMds.join(', ')}">└ 기타IP (${etcMds.length}개)</td>
+        <td class="sep-l c26">${M(et)}</td><td class="c26">${el?M(el):'—'}</td><td class="sep-r c26">${P(el,et)}</td>
+        <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+        <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+        <td class="cyoy">—</td><td class="cyoy">—</td>
+      </tr>`;
+    }
+  });
+  document.getElementById('qtblBody').innerHTML=h;
+}
+
+/* ── IP 바차트 ── */
+const ipData=[
+  {ip:'LFSQ',     total:248072943, lic:248072943, lic25:109747352},
+  {ip:'ORIGINAL', total:582487316, lic:205832478, lic25:54730240},
+  {ip:'ARTIST',   total:1023379290,lic:25710197,  lic25:11387350},
+  {ip:'Patnership',total:141114097,lic:40471502,  lic25:65431400}
+];
 function rIP(){
-  const mx=Math.max(...D.ip.map(d=>d.total));
-  document.getElementById('ipBars').innerHTML=D.ip.map(d=>{
+  const mx=Math.max(...ipData.map(d=>d.total));
+  document.getElementById('ipBars').innerHTML=ipData.map(d=>{
     const tw=(d.total/mx*100).toFixed(1),lw=(d.lic/mx*100).toFixed(1),r=(d.lic/d.total*100).toFixed(1);
-    return `<div class="br"><div class="bl2">${d.ip}</div><div class="bt"><div class="bf" style="width:${tw}%;background:${IPL[d.ip]}"></div><div class="blo" style="width:${lw}%;background:${IPC[d.ip]}"></div></div><div class="bv">총 ${M(d.total)}백만<br><span style="color:${IPC[d.ip]}">사입 ${M(d.lic)}백만 (${r}%)</span></div></div>`;
+    return `<div class="br"><div class="bl2">${d.ip}</div>
+      <div class="bt"><div class="bf" style="width:${tw}%;background:${IPL[d.ip]}"></div><div class="blo" style="width:${lw}%;background:${IPC[d.ip]}"></div></div>
+      <div class="bv">총 ${M(d.total)}백만<br><span style="color:${IPC[d.ip]}">사입 ${M(d.lic)}백만 (${r}%)</span></div></div>`;
   }).join('');
 }
 function rYOY(){
-  const mx=Math.max(...D.ip.map(d=>Math.max(d.lic,d.lic25)));
-  document.getElementById('yoyBars').innerHTML=D.ip.map(d=>{
+  const mx=Math.max(...ipData.map(d=>Math.max(d.lic,d.lic25)));
+  document.getElementById('yoyBars').innerHTML=ipData.map(d=>{
     const yoy=((d.lic/d.lic25-1)*100).toFixed(1),up=d.lic>=d.lic25,col=up?'#A32D2D':'#185FA5';
     const w25=(d.lic25/mx*100).toFixed(1),w26=(d.lic/mx*100).toFixed(1);
-    return `<div class="br" style="margin-bottom:4px"><div class="bl2" style="font-size:13px">${d.ip}</div><div style="flex:1"><div style="display:flex;align-items:center;gap:4px;margin-bottom:3px"><div style="width:${w25}%;height:6px;background:#D3D1C7;border-radius:2px;min-width:2px"></div><span style="font-size:11.5px;color:var(--t3)">${M(d.lic25)}백만</span></div><div style="display:flex;align-items:center;gap:4px"><div style="width:${w26}%;height:6px;background:${IPC[d.ip]};border-radius:2px;min-width:2px"></div><span style="font-size:11.5px;color:${IPC[d.ip]}">${M(d.lic)}백만</span></div></div><div style="font-size:13px;font-weight:500;color:${col};width:68px;text-align:right">${up?'▲':'▼'}${Math.abs(yoy)}%</div></div>`;
+    return `<div class="br" style="margin-bottom:5px">
+      <div class="bl2" style="font-size:11px">${d.ip}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:3px;margin-bottom:2px"><div style="width:${w25}%;height:5px;background:#D3D1C7;border-radius:2px;min-width:2px"></div><span style="font-size:10px;color:var(--t3)">${M(d.lic25)}백만</span></div>
+        <div style="display:flex;align-items:center;gap:3px"><div style="width:${w26}%;height:5px;background:${IPC[d.ip]};border-radius:2px;min-width:2px"></div><span style="font-size:10px;color:${IPC[d.ip]}">${M(d.lic)}백만</span></div>
+      </div>
+      <div style="font-size:11px;font-weight:500;color:${col};width:56px;text-align:right">${up?'▲':'▼'}${Math.abs(yoy)}%</div>
+    </div>`;
   }).join('');
 }
-function rTree(){
-  const el=document.getElementById('treemap');
-  const W=el.offsetWidth||460,H=320,GAP=3;
-  el.style.height=H+'px';
-  const tL=D.ip.reduce((s,d)=>s+d.lic,0);
-  const sorted=[...D.ip].sort((a,b)=>b.lic-a.lic);
-  const l=sorted.slice(0,2),ri=sorted.slice(2);
-  const lT=l.reduce((s,d)=>s+d.lic,0),rT=ri.reduce((s,d)=>s+d.lic,0);
-  const lW=Math.round(W*lT/tL);
-  const cs=[];let cy=0;
-  l.forEach(d=>{const h=Math.round(H*d.lic/lT);cs.push({...d,x:0,y:cy,w:lW,h});cy+=h;});
-  cy=0;ri.forEach(d=>{const h=Math.round(H*d.lic/rT);cs.push({...d,x:lW,y:cy,w:W-lW,h});cy+=h;});
-  el.innerHTML=cs.map(c=>{
-    const yoy=((c.lic/c.lic25-1)*100).toFixed(1),up=c.lic>=c.lic25,p=(c.lic/tL*100).toFixed(1);
-    return `<div class="tmc" style="left:${c.x+GAP}px;top:${c.y+GAP}px;width:${c.w-GAP*2}px;height:${c.h-GAP*2}px;background:${IPC[c.ip]}"><div class="tmi">${c.ip}</div><div class="tmv">${M(c.lic)}백만</div><div class="tmp">${p}%</div><div class="tmy">${up?'▲':'▼'}${Math.abs(yoy)}%</div></div>`;
-  }).join('');
+
+/* ── 도넛 ── */
+function rDonut(){
+  const wrap=document.querySelector('.donut-wrap');
+  const W=Math.max(wrap?wrap.offsetWidth:460,400),H=380;
+  const dc=document.getElementById('donutCanvas'),lc=document.getElementById('lineCanvas');
+  [dc,lc].forEach(cv=>{cv.width=W;cv.height=H;cv.style.width=W+'px';cv.style.height=H+'px';});
+  const ctx=dc.getContext('2d'),lctx=lc.getContext('2d');
+  const totalLic=ipData.reduce((s,d)=>s+d.lic,0);
+  const COLORS=Object.values(IPC);
+  const cx=W/2,cy=H/2,R=100,ir=58;
+  let angle=-Math.PI/2;
+  const segs=[];
+  ipData.forEach((d,i)=>{
+    const sweep=(d.lic/totalLic)*2*Math.PI;
+    segs.push({...d,start:angle,sweep,mid:angle+sweep/2,color:COLORS[i]});
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,angle,angle+sweep);ctx.closePath();
+    ctx.fillStyle=COLORS[i];ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    angle+=sweep;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,ir,0,2*Math.PI);ctx.fillStyle='#fff';ctx.fill();
+  ctx.textAlign='center';
+  ctx.fillStyle='#E24B4A';ctx.font='700 17px sans-serif';ctx.fillText('26.0%',cx,cy+5);
+  ctx.fillStyle='#9B9993';ctx.font='500 11px sans-serif';ctx.fillText('사입비중',cx,cy+21);
+  const PAD=14,LBL_H=22,LBL_W=166,DOT_R=R+8,ARM_R=R+22,GAP=6;
+  const left=segs.filter(s=>Math.cos(s.mid)<0),right=segs.filter(s=>Math.cos(s.mid)>=0);
+  function spreadYs(list){
+    const ys=list.map(s=>cy+Math.sin(s.mid)*(ARM_R+30));
+    const order=[...ys.keys()].sort((a,b)=>ys[a]-ys[b]);
+    const out=[...ys];
+    for(let k=1;k<order.length;k++){const p=order[k-1],c=order[k];if(out[c]<out[p]+LBL_H+GAP)out[c]=out[p]+LBL_H+GAP;}
+    return out.map(y=>Math.max(LBL_H/2+4,Math.min(H-LBL_H/2-4,y)));
+  }
+  const leftYs=spreadYs(left),rightYs=spreadYs(right);
+  lctx.clearRect(0,0,W,H);
+  if(!CanvasRenderingContext2D.prototype.roundRect){
+    CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+      this.beginPath();this.moveTo(x+r,y);this.lineTo(x+w-r,y);this.arcTo(x+w,y,x+w,y+r,r);
+      this.lineTo(x+w,y+h-r);this.arcTo(x+w,y+h,x+w-r,y+h,r);
+      this.lineTo(x+r,y+h);this.arcTo(x,y+h,x,y+h-r,r);this.lineTo(x,y+r);this.arcTo(x,y,x+r,y,r);this.closePath();
+    };
+  }
+  function drawLabel(seg,labelY,side){
+    const col=seg.color,dx=Math.cos(seg.mid),dy=Math.sin(seg.mid);
+    const px=cx+DOT_R*dx,py=cy+DOT_R*dy;
+    lctx.beginPath();lctx.arc(px,py,3.5,0,2*Math.PI);lctx.fillStyle=col;lctx.fill();
+    const ex=cx+ARM_R*dx,ey=cy+ARM_R*dy;
+    const boxX=side==='left'?PAD:W-PAD-LBL_W,lineEndX=side==='left'?boxX+LBL_W:boxX;
+    lctx.beginPath();lctx.moveTo(px,py);lctx.lineTo(ex,ey);lctx.lineTo(lineEndX,labelY);
+    lctx.strokeStyle=col;lctx.lineWidth=1.2;lctx.stroke();
+    const boxY=labelY-LBL_H/2;
+    lctx.beginPath();lctx.roundRect(boxX,boxY,LBL_W,LBL_H,4);
+    lctx.fillStyle=col+'20';lctx.fill();lctx.strokeStyle=col+'70';lctx.lineWidth=0.8;lctx.stroke();
+    lctx.fillStyle=col;lctx.font='600 11px sans-serif';lctx.textAlign='left';lctx.fillText(seg.ip,boxX+6,labelY+4);
+    const pct=(seg.lic/totalLic*100).toFixed(1)+'%';
+    lctx.font='500 10.5px sans-serif';lctx.textAlign='right';
+    lctx.fillText(`${M(seg.lic)}백만  ${pct}`,boxX+LBL_W-6,labelY+4);
+  }
+  left.forEach((seg,i)=>drawLabel(seg,leftYs[i],'left'));
+  right.forEach((seg,i)=>drawLabel(seg,rightYs[i],'right'));
 }
+
+/* ── MD 테이블 ── */
+const mdData=[
+  {ip:'LFSQ',md:'MULTI',total:247221659,lic:247221659},{ip:'LFSQ',md:'LFSQ_PB',total:851283,lic:851283},
+  {ip:'ORIGINAL',md:'ZNF',total:387878926,lic:172078611},{ip:'ORIGINAL',md:'MININI',total:61141446,lic:24127796},
+  {ip:'ORIGINAL',md:'B&F',total:60437274,lic:9565667},{ip:'ORIGINAL',md:'COLLER',total:63815426,lic:60404},
+  {ip:'ORIGINAL',md:'SSEB',total:5767963,lic:0},{ip:'ORIGINAL',md:'DHB',total:2528887,lic:0},{ip:'ORIGINAL',md:'LTC',total:917394,lic:0},
+  {ip:'ARTIST',md:'BT21',total:796160460,lic:24794975},{ip:'ARTIST',md:'NCTD',total:97453937,lic:0},
+  {ip:'ARTIST',md:'TRZ',total:88443020,lic:0},{ip:'ARTIST',md:'ZB1',total:22773960,lic:915222},
+  {ip:'ARTIST',md:'NJ',total:8892029,lic:0},{ip:'ARTIST',md:'PLAVE',total:4619640,lic:0},
+  {ip:'ARTIST',md:'ATZ',total:4136597,lic:0},{ip:'ARTIST',md:'IDLE',total:899647,lic:0},
+  {ip:'Patnership',md:'JUG',total:127918317,lic:34457567},{ip:'Patnership',md:'DT',total:6082144,lic:2200480},
+  {ip:'Patnership',md:'MONA',total:5973527,lic:2673345},{ip:'Patnership',md:'PIC',total:1140110,lic:1140110}
+];
 let mdf='all';
 function slMd(g,btn){mdf=g;btn.parentElement.querySelectorAll('.sb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');rMd();}
 function rMd(){
   const gs=mdf==='all'?GRP:[mdf];let h='';
   gs.forEach(g=>{
-    const rows=D.md.filter(d=>d.ip===g);if(!rows.length)return;
+    const rows=mdData.filter(d=>d.ip===g);if(!rows.length)return;
     const st=rows.reduce((s,r)=>s+r.total,0),sl=rows.reduce((s,r)=>s+r.lic,0),c=IPC[g];
     h+=`<tr class="${SR[g]}"><td>📌 ${g} 합산</td><td class="n">${M(st)}</td><td class="n">${M(sl)}</td><td class="n">${ibar(sl,st,c)}</td></tr>`;
     rows.forEach(d=>{h+=`<tr><td style="padding-left:16px;font-weight:500">${d.md}</td><td class="n">${M(d.total)}</td><td class="n" style="color:${d.lic>0?c:'var(--t3)'}">${d.lic>0?M(d.lic):'—'}</td><td class="n">${d.lic>0?ibar(d.lic,d.total,c):'—'}</td></tr>`;});
   });
   document.getElementById('mdBody').innerHTML=h;
 }
+
+/* ── 브랜드 ── */
+const brandsData={
+  LFSQ:[{n:'누가사',v:143525473},{n:'케이팝데몬헌터스',v:38110785},{n:'가나디',v:13506496},{n:'퍼글러',v:12266821},{n:'랜덤스퀘어',v:6115829},{n:'미피',v:5561044},{n:'포켓몬스터',v:5447315},{n:'테디테일즈',v:4369355},{n:'에이비페브',v:3323914},{n:'미키&미니',v:3188237},{n:'체로프몽모',v:3136158},{n:'짱구는못말려',v:3091921},{n:'티니핑',v:1637473},{n:'티머니',v:1083268},{n:'기타브랜드',v:3665350}],
+  ORIGINAL:[{n:'[ZNF]로이체',v:160131377},{n:'[MININI]아이피즈',v:14046166},{n:'[ZNF]케이스티파이',v:10105293},{n:'[MININI]명성',v:6805462},{n:'[B&F]코코도르',v:3338173},{n:'[B&F]25y그린에디션',v:1873828},{n:'[ZNF]롬앤',v:1841940},{n:'[MININI]뉴니스',v:1476071},{n:'[B&F]뉴니스',v:1292461},{n:'[B&F]티머니',v:1031751},{n:'기타브랜드',v:3889926}],
+  ARTIST:[{n:'[BT21]아이컬러즈',v:11846045},{n:'[BT21]티머니',v:7005983},{n:'[BT21]SOL',v:5007604},{n:'[ZB1]로이체',v:764380},{n:'[BT21]위즈덤',v:751143},{n:'기타브랜드',v:335042}],
+  Patnership:[{n:'[JUG]나라홈데코',v:15383768},{n:'[JUG]미스티',v:14580859},{n:'[MONA]MNH',v:2673345},{n:'[JUG]아이피즈',v:2353645},{n:'[DT]다이노탱',v:2042318},{n:'[JUG]스튜디오천재',v:1260813},{n:'[PIC]피클스더프로그',v:1140110},{n:'기타브랜드',v:1036644}]
+};
 function rBrands(){
   document.getElementById('brands').innerHTML=GRP.map(ip=>{
-    const list=D.brands[ip]||[];if(!list.length)return'';
+    const list=brandsData[ip]||[];if(!list.length)return'';
     const tot=list.reduce((s,b)=>s+b.v,0),mx=list[0].v,c=IPC[ip];
-    return `<div class="brs"><div class="brh"><span class="bdg" style="${BD[ip]}">${ip}</span><span style="font-size:9px;color:var(--t2)">사입 합계: ${M(tot)}백만</span></div><div class="brg">${list.map(b=>{const w=(b.v/mx*100).toFixed(1),p=(b.v/tot*100).toFixed(1);return `<div class="brw"><div class="brn">${b.n}</div><div class="brt"><div class="brf" style="width:${w}%;background:${c}"></div></div><div class="bri">${M(b.v)}백만 <span style="color:${c};font-weight:500">${p}%</span></div></div>`;}).join('')}</div></div>`;
+    return `<div class="brs"><div class="brh"><span class="bdg" style="${BD[ip]}">${ip}</span><span style="font-size:12px;color:var(--t2)">사입 합계: ${M(tot)}백만</span></div>
+      <div class="brg">${list.map(b=>{const w=(b.v/mx*100).toFixed(1),p=(b.v/tot*100).toFixed(1);
+        return `<div class="brw"><div class="brn">${b.n}</div><div class="brt"><div class="brf" style="width:${w}%;background:${c}"></div></div><div class="bri">${M(b.v)}백만 <span style="color:${c};font-weight:500">${p}%</span></div></div>`;
+      }).join('')}</div></div>`;
   }).join('');
 }
-let chf='all';
-function slCh(g,btn){chf=g;btn.parentElement.querySelectorAll('.sb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');rCh();}
+
+/* ── 채널 ── */
+const chByIp={
+  all:{on:[{ch:'통합몰',total:439169304,lic:95630807},{ch:'스마트스토어',total:129771121,lic:42397986},{ch:'카카오커머스',total:42012534,lic:10681091},{ch:'29CM',total:17388220,lic:0}],
+       off:[{ch:'라인프렌즈 스퀘어 명동점',total:666718169,lic:123922153},{ch:'홍대점',total:382236651,lic:60923675},{ch:'라인프렌즈 스퀘어 성수점',total:279559870,lic:178328548},{ch:'인사동점',total:34398420,lic:6520895},{ch:'분당스퀘어',total:5476499,lic:1681965}]},
+  LFSQ:{on:[{ch:'통합몰',total:4097000,lic:4097000},{ch:'스마트스토어',total:423000,lic:423000},{ch:'카카오커머스',total:6082000,lic:6082000},{ch:'29CM',total:0,lic:0}],
+        off:[{ch:'라인프렌즈 스퀘어 명동점',total:74723000,lic:74723000},{ch:'홍대점',total:35894000,lic:35894000},{ch:'라인프렌즈 스퀘어 성수점',total:119655000,lic:119655000},{ch:'인사동점',total:7005000,lic:7005000},{ch:'분당스퀘어',total:194000,lic:194000}]},
+  ORIGINAL:{on:[{ch:'통합몰',total:231615000,lic:113757000},{ch:'스마트스토어',total:20594000,lic:20552000},{ch:'카카오커머스',total:36427000,lic:0},{ch:'29CM',total:4978000,lic:0}],
+            off:[{ch:'라인프렌즈 스퀘어 명동점',total:226415000,lic:49972000},{ch:'홍대점',total:43803000,lic:15296000},{ch:'라인프렌즈 스퀘어 성수점',total:16251000,lic:5951000},{ch:'인사동점',total:1829000,lic:118000},{ch:'분당스퀘어',total:575000,lic:187000}]},
+  ARTIST:{on:[{ch:'통합몰',total:413254000,lic:15519000},{ch:'스마트스토어',total:53335000,lic:105000},{ch:'카카오커머스',total:4199000,lic:0},{ch:'29CM',total:0,lic:0}],
+          off:[{ch:'라인프렌즈 스퀘어 명동점',total:329129000,lic:6704000},{ch:'홍대점',total:175374000,lic:3000000},{ch:'라인프렌즈 스퀘어 성수점',total:35090000,lic:335000},{ch:'인사동점',total:12928000,lic:40000},{ch:'분당스퀘어',total:72000,lic:8000}]},
+  Patnership:{on:[{ch:'통합몰',total:31852000,lic:6038000},{ch:'스마트스토어',total:10427000,lic:2438000},{ch:'카카오커머스',total:2717000,lic:0},{ch:'29CM',total:1291000,lic:0}],
+              off:[{ch:'라인프렌즈 스퀘어 명동점',total:28446000,lic:8317000},{ch:'홍대점',total:10725000,lic:2907000},{ch:'라인프렌즈 스퀘어 성수점',total:53334000,lic:20206000},{ch:'인사동점',total:2267000,lic:521000},{ch:'분당스퀘어',total:55000,lic:46000}]}
+};
+let ipf='all';
+function slIp(g,btn){ipf=g;btn.parentElement.querySelectorAll('.sb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');rCh();}
 function rCh(){
-  const ts=chf==='all'?['온라인','오프라인']:[chf];let h='';
-  ts.forEach(t=>{
-    const rows=D.channels.filter(r=>r.type===t),st=rows.reduce((s,r)=>s+r.total,0),sl=rows.reduce((s,r)=>s+r.lic,0);
-    const c=t==='온라인'?'#185FA5':'#0F6E56',cls=t==='온라인'?'ron':'rof';
-    h+=`<tr class="${cls}"><td>📌 ${t} 합산</td><td class="n">${M(st)}</td><td class="n">${M(sl)}</td><td class="n">${ibar(sl,st,c)}</td></tr>`;
-    rows.forEach(r=>{h+=`<tr><td style="padding-left:16px;font-weight:500">${r.ch}</td><td class="n">${M(r.total)}</td><td class="n" style="color:${r.lic>0?c:'var(--t3)'}">${r.lic>0?M(r.lic):'—'}</td><td class="n">${r.lic>0?ibar(r.lic,r.total,c):'—'}</td></tr>`;});
-  });
+  const data=chByIp[ipf]||chByIp['all'];
+  const onR=data.on.filter(r=>r.total>0),offR=data.off.filter(r=>r.total>0);
+  const sOn={total:onR.reduce((s,r)=>s+r.total,0),lic:onR.reduce((s,r)=>s+r.lic,0)};
+  const sOff={total:offR.reduce((s,r)=>s+r.total,0),lic:offR.reduce((s,r)=>s+r.lic,0)};
+  const oc=ipf==='all'?'#185FA5':IPC[ipf],fc=ipf==='all'?'#0F6E56':IPC[ipf];
+  let h='';
+  h+=`<tr class="ron"><td>📌 온라인 합산</td><td class="n">${M(sOn.total)}</td><td class="n">${M(sOn.lic)}</td><td class="n">${ibar(sOn.lic,sOn.total,oc)}</td></tr>`;
+  onR.forEach(r=>{h+=`<tr><td style="padding-left:16px;font-weight:500">${r.ch}</td><td class="n">${M(r.total)}</td><td class="n" style="color:${r.lic>0?oc:'var(--t3)'}">${r.lic>0?M(r.lic):'—'}</td><td class="n">${r.lic>0?ibar(r.lic,r.total,oc):'—'}</td></tr>`;});
+  h+=`<tr class="rof"><td>📌 오프라인 합산</td><td class="n">${M(sOff.total)}</td><td class="n">${M(sOff.lic)}</td><td class="n">${ibar(sOff.lic,sOff.total,fc)}</td></tr>`;
+  offR.forEach(r=>{h+=`<tr><td style="padding-left:16px;font-weight:500">${r.ch}</td><td class="n">${M(r.total)}</td><td class="n" style="color:${r.lic>0?fc:'var(--t3)'}">${r.lic>0?M(r.lic):'—'}</td><td class="n">${r.lic>0?ibar(r.lic,r.total,fc):'—'}</td></tr>`;});
   document.getElementById('chBody').innerHTML=h;
 }
-rIP();rYOY();rMd();rBrands();rCh();
-setTimeout(rTree,80);
+
+rQtbl();rIP();rYOY();rMd();rBrands();rCh();
+setTimeout(rDonut,120);
 </script>
 </body>
 </html>
